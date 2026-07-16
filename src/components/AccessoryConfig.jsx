@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { hexToRgbaObject, rgbaObjectToHex } from '../utils/colorUtils';
 import { downloadJson, readFileAsJson } from '../utils/configParsers';
+import KeyBindInput from './KeyBindInput';
 
 const DEFAULT_CONFIG = {
   ScanIntervalMs: 1000,
@@ -128,20 +129,20 @@ export default function AccessoryConfig() {
         <div className="form-row">
           <div className="form-group">
             <label>Toggle Edit Mode</label>
-            <input type="text" value={config.KeyBinds.ToggleEditMode} onChange={e => updateKeyBind('ToggleEditMode', e.target.value)} />
+            <KeyBindInput value={config.KeyBinds.ToggleEditMode} onChange={v => updateKeyBind('ToggleEditMode', v)} />
           </div>
           <div className="form-group">
             <label>Reset Coords</label>
-            <input type="text" value={config.KeyBinds.ResetCoords} onChange={e => updateKeyBind('ResetCoords', e.target.value)} />
+            <KeyBindInput value={config.KeyBinds.ResetCoords} onChange={v => updateKeyBind('ResetCoords', v)} />
           </div>
         </div>
         <div className="form-row">
-          <div className="form-group"><label>Toggle Slot 1</label><input type="text" value={config.KeyBinds.ToggleSlot1} onChange={e => updateKeyBind('ToggleSlot1', e.target.value)} /></div>
-          <div className="form-group"><label>Toggle Slot 2</label><input type="text" value={config.KeyBinds.ToggleSlot2} onChange={e => updateKeyBind('ToggleSlot2', e.target.value)} /></div>
+          <div className="form-group"><label>Toggle Slot 1</label><KeyBindInput value={config.KeyBinds.ToggleSlot1} onChange={v => updateKeyBind('ToggleSlot1', v)} /></div>
+          <div className="form-group"><label>Toggle Slot 2</label><KeyBindInput value={config.KeyBinds.ToggleSlot2} onChange={v => updateKeyBind('ToggleSlot2', v)} /></div>
         </div>
         <div className="form-row">
-          <div className="form-group"><label>Toggle Slot 3</label><input type="text" value={config.KeyBinds.ToggleSlot3} onChange={e => updateKeyBind('ToggleSlot3', e.target.value)} /></div>
-          <div className="form-group"><label>Toggle Slot 4</label><input type="text" value={config.KeyBinds.ToggleSlot4} onChange={e => updateKeyBind('ToggleSlot4', e.target.value)} /></div>
+          <div className="form-group"><label>Toggle Slot 3</label><KeyBindInput value={config.KeyBinds.ToggleSlot3} onChange={v => updateKeyBind('ToggleSlot3', v)} /></div>
+          <div className="form-group"><label>Toggle Slot 4</label><KeyBindInput value={config.KeyBinds.ToggleSlot4} onChange={v => updateKeyBind('ToggleSlot4', v)} /></div>
         </div>
 
         <div className="section-title">🎨 Colors</div>
