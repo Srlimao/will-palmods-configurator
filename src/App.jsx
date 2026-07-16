@@ -3,12 +3,19 @@ import HUDLocatorConfig from './components/HUDLocatorConfig';
 import AccessoryConfig from './components/AccessoryConfig';
 
 function App() {
-  const [activeMod, setActiveMod] = useState('hudlocator');
+  const [activeMod, setActiveMod] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tabParam = params.get('tab');
+    if (tabParam === 'accessory' || tabParam === 'hudlocator') {
+      return tabParam;
+    }
+    return 'hudlocator';
+  });
 
   return (
     <div className="container">
       <header>
-        <h1>Mod Configurator</h1>
+        <h1>Mod Configuration Center</h1>
         <p>Configure Palworld Mods: HUD Locator and Accessory Toggler</p>
       </header>
 
