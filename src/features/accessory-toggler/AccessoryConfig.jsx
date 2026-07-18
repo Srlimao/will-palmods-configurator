@@ -190,6 +190,9 @@ export default function AccessoryConfig({ initialConfig }) {
           <div className="help-text">
             Save this file to your mod's directory to apply changes.
           </div>
+          <div className="reload-tip">
+            💡 Press <kbd>Alt</kbd> + <kbd>R</kbd> to reload the save in game.
+          </div>
         </div>
       </div>
     </>

@@ -252,6 +252,37 @@ input[type="range"]::-webkit-slider-thumb:hover {
   line-height: 1.4;
 }
 
+.reload-tip {
+  margin-top: 0.75rem;
+  padding: 0.6rem 1rem;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 8px;
+  color: var(--text-main);
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.reload-tip kbd {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  padding: 0.15rem 0.45rem;
+  font-family: var(--font-outfit), monospace;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 0.85rem;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.3);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
 @keyframes toastFadeIn {
   from {
     transform: translateY(-1rem);
