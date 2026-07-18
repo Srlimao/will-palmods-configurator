@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { hexToRgbaObject, rgbaObjectToHex } from '../utils/colorUtils';
-import { downloadJson, readFileAsJson } from '../utils/configParsers';
-import KeyBindInput from './KeyBindInput';
+import { hexToRgbaObject, rgbaObjectToHex } from '../../components/shared/utils/colorUtils';
+import { downloadJson, readFileAsJson } from '../../components/shared/utils/configParsers';
+import KeyBindInput from '../../components/shared/KeyBindInput/KeyBindInput';
+import styles from './styles/accessory.module.css';
 
 const DEFAULT_CONFIG = {
   ScanIntervalMs: 1000,
@@ -46,24 +47,6 @@ export default function AccessoryConfig({ initialConfig }) {
     processFile(file);
   };
 
-  const onDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const onDragLeave = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const onDrop = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files[0];
-    if (!file) return;
-    processFile(file);
-  };
-
   const processFile = async (file) => {
     try {
       const json = await readFileAsJson(file);
@@ -90,29 +73,40 @@ export default function AccessoryConfig({ initialConfig }) {
 
   return (
     <>
-      <div className="panel">
-        <div className="panel-title">⚙️ Accessory Toggler Settings</div>
+      <div className={styles.panel}>
+        <div className={styles.panelTitle}>⚙️ Accessory Toggler Settings</div>
 
-        <div className={`drop-zone ${isDragging ? 'dragover' : ''}`} onClick={() => document.getElementById('acc-file-input').click()} onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>
+        <div 
+          className={`${styles.dropZone} ${isDragging ? styles.dragover : ''}`} 
+          onClick={() => document.getElementById('acc-file-input').click()} 
+          onDragOver={e => { e.preventDefault(); setIsDragging(true); }} 
+          onDragLeave={e => { e.preventDefault(); setIsDragging(false); }} 
+          onDrop={e => {
+            e.preventDefault();
+            setIsDragging(false);
+            const file = e.dataTransfer.files[0];
+            if (file) processFile(file);
+          }}
+        >
           <input type="file" id="acc-file-input" accept=".json" style={{ display: 'none' }} onChange={handleFileUpload} />
-          <div className="drop-zone-text">
+          <div className={styles.dropZoneText}>
             Drag & drop your <strong>config.json</strong> here or <strong>Click to Browse</strong>
           </div>
         </div>
 
-        <div className="section-title">General</div>
-        <div className="form-row">
-          <div className="form-group checkbox-group" onClick={() => updateConfig('Enabled', !config.Enabled)}>
+        <div className={styles.sectionTitle}>General</div>
+        <div className={styles.formRow}>
+          <div className={`${styles.formGroup} ${styles.checkboxGroup}`} onClick={() => updateConfig('Enabled', !config.Enabled)}>
             <input type="checkbox" checked={config.Enabled} readOnly />
-            <span className="checkbox-text">Master Enabled</span>
+            <span className={styles.checkboxText}>Master Enabled</span>
           </div>
-          <div className="form-group checkbox-group" onClick={() => updateConfig('Debug', !config.Debug)}>
+          <div className={`${styles.formGroup} ${styles.checkboxGroup}`} onClick={() => updateConfig('Debug', !config.Debug)}>
             <input type="checkbox" checked={config.Debug} readOnly />
-            <span className="checkbox-text">Debug Mode</span>
+            <span className={styles.checkboxText}>Debug Mode</span>
           </div>
         </div>
-        <div className="form-row">
-          <div className="form-group">
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
             <label>HUD Scale <span className="val-label">{config.HUDScale}</span></label>
             <input 
               type="range" min="0.5" max="3.0" step="0.1" 
@@ -120,7 +114,7 @@ export default function AccessoryConfig({ initialConfig }) {
               onChange={e => updateConfig('HUDScale', parseFloat(e.target.value))} 
             />
           </div>
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Scan Interval (ms) <span className="val-label">{config.ScanIntervalMs}</span></label>
             <input 
               type="range" min="500" max="5000" step="100" 
@@ -130,65 +124,64 @@ export default function AccessoryConfig({ initialConfig }) {
           </div>
         </div>
 
-        <div className="section-title">⌨️ Keybinds</div>
-        <div className="form-row">
-          <div className="form-group">
+        <div className={styles.sectionTitle}>⌨️ Keybinds</div>
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
             <label>Toggle Edit Mode</label>
             <KeyBindInput value={config.KeyBinds.ToggleEditMode} onChange={v => updateKeyBind('ToggleEditMode', v)} />
           </div>
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Reset Coords</label>
             <KeyBindInput value={config.KeyBinds.ResetCoords} onChange={v => updateKeyBind('ResetCoords', v)} />
           </div>
         </div>
-        <div className="form-row">
-          <div className="form-group"><label>Toggle Slot 1</label><KeyBindInput value={config.KeyBinds.ToggleSlot1} onChange={v => updateKeyBind('ToggleSlot1', v)} /></div>
-          <div className="form-group"><label>Toggle Slot 2</label><KeyBindInput value={config.KeyBinds.ToggleSlot2} onChange={v => updateKeyBind('ToggleSlot2', v)} /></div>
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}><label>Toggle Slot 1</label><KeyBindInput value={config.KeyBinds.ToggleSlot1} onChange={v => updateKeyBind('ToggleSlot1', v)} /></div>
+          <div className={styles.formGroup}><label>Toggle Slot 2</label><KeyBindInput value={config.KeyBinds.ToggleSlot2} onChange={v => updateKeyBind('ToggleSlot2', v)} /></div>
         </div>
-        <div className="form-row">
-          <div className="form-group"><label>Toggle Slot 3</label><KeyBindInput value={config.KeyBinds.ToggleSlot3} onChange={v => updateKeyBind('ToggleSlot3', v)} /></div>
-          <div className="form-group"><label>Toggle Slot 4</label><KeyBindInput value={config.KeyBinds.ToggleSlot4} onChange={v => updateKeyBind('ToggleSlot4', v)} /></div>
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}><label>Toggle Slot 3</label><KeyBindInput value={config.KeyBinds.ToggleSlot3} onChange={v => updateKeyBind('ToggleSlot3', v)} /></div>
+          <div className={styles.formGroup}><label>Toggle Slot 4</label><KeyBindInput value={config.KeyBinds.ToggleSlot4} onChange={v => updateKeyBind('ToggleSlot4', v)} /></div>
         </div>
 
-        <div className="section-title">🎨 Colors</div>
-        <div className="form-row">
-          <div className="form-group">
+        <div className={styles.sectionTitle}>🎨 Colors</div>
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
             <label>Card Background</label>
-            <div className="color-picker-wrapper">
+            <div className={styles.colorPickerWrapper}>
               <input type="color" value={rgbaObjectToHex(config.CardBg)} onChange={e => updateConfig('CardBg', hexToRgbaObject(e.target.value, config.CardBg.A))} />
               <input type="text" value={rgbaObjectToHex(config.CardBg)} readOnly />
             </div>
           </div>
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Border Color</label>
-            <div className="color-picker-wrapper">
+            <div className={styles.colorPickerWrapper}>
               <input type="color" value={rgbaObjectToHex(config.BorderColor)} onChange={e => updateConfig('BorderColor', hexToRgbaObject(e.target.value, config.BorderColor.A))} />
               <input type="text" value={rgbaObjectToHex(config.BorderColor)} readOnly />
             </div>
           </div>
         </div>
-        <div className="form-row">
-          <div className="form-group">
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
             <label>Text Color (Enabled)</label>
-            <div className="color-picker-wrapper">
+            <div className={styles.colorPickerWrapper}>
               <input type="color" value={rgbaObjectToHex(config.TextColorEnabled)} onChange={e => updateConfig('TextColorEnabled', hexToRgbaObject(e.target.value, config.TextColorEnabled.A))} />
               <input type="text" value={rgbaObjectToHex(config.TextColorEnabled)} readOnly />
             </div>
           </div>
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Text Color (Disabled)</label>
-            <div className="color-picker-wrapper">
+            <div className={styles.colorPickerWrapper}>
               <input type="color" value={rgbaObjectToHex(config.TextColorDisabled)} onChange={e => updateConfig('TextColorDisabled', hexToRgbaObject(e.target.value, config.TextColorDisabled.A))} />
               <input type="text" value={rgbaObjectToHex(config.TextColorDisabled)} readOnly />
             </div>
           </div>
         </div>
-
       </div>
 
-      <div className="preview-container">
-        <div className="panel actions" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'center' }}>
-          <button className="btn btn-primary" onClick={exportConfig} style={{ width: '100%' }}>
+      <div className={styles.previewContainer}>
+        <div className={`${styles.panel} ${styles.actions}`}>
+          <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={exportConfig}>
             💾 Download config.json
           </button>
           <div className="help-text">

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { UE_KEYCODES, mapJsKeyToUE } from '../utils/keycodes';
+import { UE_KEYCODES, mapJsKeyToUE } from './keycodes';
+import styles from './keybind.module.css';
 
 export default function KeyBindInput({ value, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,9 +33,6 @@ export default function KeyBindInput({ value, onChange }) {
       const mapped = mapJsKeyToUE(e);
       if (mapped) {
         onChange(mapped);
-      } else {
-        // If not mapped natively, we just cancel and let them search it manually to prevent bad config.
-        // We could alert here, but silently ignoring unmappable complex keys is safer.
       }
       setIsListening(false);
       setIsOpen(false);
@@ -45,42 +43,42 @@ export default function KeyBindInput({ value, onChange }) {
   }, [isListening, onChange]);
 
   return (
-    <div className="keybind-wrapper" ref={containerRef}>
-      <div className="keybind-input-group">
+    <div className={styles.wrapper} ref={containerRef}>
+      <div className={styles.inputGroup}>
         <button 
-          className={`btn-record ${isListening ? 'listening' : ''}`}
+          className={`${styles.btnRecord} ${isListening ? styles.listening : ''}`}
           onClick={() => { setIsListening(!isListening); setIsOpen(false); }}
           title="Press to capture keystroke"
         >
           {isListening ? 'Press Key...' : '⌨️'}
         </button>
-        <div className="keybind-select" onClick={() => { setIsOpen(!isOpen); setIsListening(false); setSearch(''); }}>
+        <div className={styles.select} onClick={() => { setIsOpen(!isOpen); setIsListening(false); setSearch(''); }}>
           <span className="keybind-value">{value || 'Select Key...'}</span>
           <span className="keybind-arrow">▼</span>
         </div>
       </div>
       
       {isOpen && (
-        <div className="keybind-dropdown">
+        <div className={styles.dropdown}>
           <input 
             type="text" 
-            className="keybind-search" 
+            className={styles.search} 
             placeholder="Search key..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             autoFocus
           />
-          <div className="keybind-list">
+          <div className={styles.list}>
             {filteredKeys.length > 0 ? filteredKeys.map(k => (
               <div 
                 key={k} 
-                className={`keybind-item ${k === value ? 'selected' : ''}`}
+                className={`${styles.item} ${k === value ? styles.selected : ''}`}
                 onClick={() => { onChange(k); setIsOpen(false); }}
               >
                 {k}
               </div>
             )) : (
-              <div className="keybind-no-results">No matches</div>
+              <div className={styles.noResults}>No matches</div>
             )}
           </div>
         </div>

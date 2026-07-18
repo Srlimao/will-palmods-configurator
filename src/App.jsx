@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import HUDLocatorConfig from './components/HUDLocatorConfig';
-import AccessoryConfig from './components/AccessoryConfig';
+import HUDLocatorConfig from './features/hud-locator/HUDLocatorConfig';
+import AccessoryConfig from './features/accessory-toggler/AccessoryConfig';
 
 // Parse query parameters once at module load
 const parseUrlParams = () => {
