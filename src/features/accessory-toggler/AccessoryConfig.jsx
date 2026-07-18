@@ -34,7 +34,7 @@ const DEFAULT_CONFIG = {
 
 export default function AccessoryConfig({ initialConfig }) {
   const [config, setConfig] = useState(() => {
-    if (initialConfig && (initialConfig.DisabledSlots || initialConfig.HUDX || initialConfig.HUDY || initialConfig.AccessoryNames)) {
+    if (initialConfig) {
       return { ...DEFAULT_CONFIG, ...initialConfig };
     }
     return DEFAULT_CONFIG;

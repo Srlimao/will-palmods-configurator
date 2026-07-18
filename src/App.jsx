@@ -6,6 +6,7 @@ import AccessoryConfig from './features/accessory-toggler/AccessoryConfig';
 const parseUrlParams = () => {
   const params = new URLSearchParams(window.location.search);
   const tabParam = params.get('tab');
+  const modParam = params.get('mod');
   const configParam = params.get('config');
 
   let parsedConfig = null;
@@ -20,41 +21,48 @@ const parseUrlParams = () => {
     }
   }
 
-  // Determine active mod tab based on tab param, or infer from config fields if absent
+  // Determine if config belongs to HUD Locator or Accessory Toggler
+  let isHud = false;
+  if (parsedConfig) {
+    isHud = parsedConfig.Global !== undefined || 
+            parsedConfig.Players !== undefined || 
+            parsedConfig.Relics !== undefined || 
+            parsedConfig.Chests !== undefined || 
+            parsedConfig.Eggs !== undefined || 
+            parsedConfig.Caves !== undefined;
+  }
+
+  // Determine active mod tab based on tab/mod parameters, or infer from config fields if absent
   let initialTab = 'hudlocator';
-  if (tabParam === 'accessory' || tabParam === 'hudlocator') {
-    initialTab = tabParam;
+  const rawTab = tabParam || modParam;
+  if (rawTab) {
+    const normalizedTab = rawTab.toLowerCase().replace(/[^a-z]/g, '');
+    if (normalizedTab === 'accessory' || normalizedTab === 'accessorytoggler') {
+      initialTab = 'accessory';
+    } else if (normalizedTab === 'hudlocator' || normalizedTab === 'hud') {
+      initialTab = 'hudlocator';
+    }
   } else if (parsedConfig) {
-    const isHud = parsedConfig.Global !== undefined || 
-                  parsedConfig.Players !== undefined || 
-                  parsedConfig.Relics !== undefined || 
-                  parsedConfig.Chests !== undefined || 
-                  parsedConfig.Eggs !== undefined || 
-                  parsedConfig.Caves !== undefined;
-                  
-    const isAcc = parsedConfig.DisabledSlots !== undefined || 
-                  parsedConfig.HUDX !== undefined || 
-                  parsedConfig.HUDY !== undefined || 
-                  parsedConfig.AccessoryNames !== undefined;
-                  
-    if (isAcc && !isHud) {
+    if (!isHud) {
       initialTab = 'accessory';
     }
   }
 
-  return { initialTab, parsedConfig, parseError };
+  const hudConfig = isHud ? parsedConfig : null;
+  const accConfig = (parsedConfig && !isHud) ? parsedConfig : null;
+
+  return { initialTab, hudConfig, accConfig, parseError };
 };
 
-const { initialTab, parsedConfig, parseError } = parseUrlParams();
+const { initialTab, hudConfig, accConfig, parseError } = parseUrlParams();
 
 function App() {
   const [activeMod, setActiveMod] = useState(initialTab);
-  const [urlConfig] = useState(parsedConfig);
   const [notification, setNotification] = useState(() => {
     if (parseError) {
       return { type: 'error', message: parseError };
     }
-    if (parsedConfig) {
+    if (hudConfig || accConfig) {
       return { type: 'success', message: 'Configuration settings loaded from game!' };
     }
     return null;
@@ -109,8 +117,8 @@ function App() {
       </div>
 
       <div className="layout">
-        {activeMod === 'hudlocator' && <HUDLocatorConfig initialConfig={urlConfig} />}
-        {activeMod === 'accessory' && <AccessoryConfig initialConfig={urlConfig} />}
+        {activeMod === 'hudlocator' && <HUDLocatorConfig initialConfig={hudConfig} />}
+        {activeMod === 'accessory' && <AccessoryConfig initialConfig={accConfig} />}
       </div>
     </div>
   );
