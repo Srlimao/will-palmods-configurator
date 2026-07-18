@@ -292,3 +292,18 @@
   color: var(--text-sub);
   text-align: center;
 }
+
+.dropZoneHint {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.8rem;
+  margin-top: 0.6rem;
+  line-height: 1.4;
+}
+
+.dropZoneHint code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--accent-primary);
+  font-family: monospace;
+}

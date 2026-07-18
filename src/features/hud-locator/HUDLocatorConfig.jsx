@@ -243,6 +243,9 @@ export default function HUDLocatorConfig({ initialConfig }) {
           <div className={styles.dropZoneText}>
             Drag & drop your <strong>config.json</strong> here or <strong>Click to Browse</strong>
           </div>
+          <div className={styles.dropZoneHint}>
+            Note: In-game configuration is loaded from: <code>%USERPROFILE%\Documents\My Games\Palworld\ModConfigs\HUDLocator\config.json</code>
+          </div>
         </div>
 
         <div className={styles.tabs}>

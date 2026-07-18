@@ -45,7 +45,7 @@ export const readFileAsJson = (file) => {
       try {
         const json = JSON.parse(e.target.result);
         resolve(json);
-      } catch (err) {
+      } catch {
         reject(new Error('Invalid JSON file.'));
       }
     };

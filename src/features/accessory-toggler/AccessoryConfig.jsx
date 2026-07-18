@@ -92,6 +92,9 @@ export default function AccessoryConfig({ initialConfig }) {
           <div className={styles.dropZoneText}>
             Drag & drop your <strong>config.json</strong> here or <strong>Click to Browse</strong>
           </div>
+          <div className={styles.dropZoneHint}>
+            Note: In-game configuration is loaded from: <code>%USERPROFILE%\Documents\My Games\Palworld\ModConfigs\AccessoryToggler\config.json</code>
+          </div>
         </div>
 
         <div className={styles.sectionTitle}>General</div>
