@@ -31,8 +31,13 @@ const DEFAULT_CONFIG = {
   BorderColor: { R: 0.0, G: 0.95, B: 1.0, A: 0.6 }
 };
 
-export default function AccessoryConfig() {
-  const [config, setConfig] = useState(DEFAULT_CONFIG);
+export default function AccessoryConfig({ initialConfig }) {
+  const [config, setConfig] = useState(() => {
+    if (initialConfig && (initialConfig.DisabledSlots || initialConfig.HUDX || initialConfig.HUDY || initialConfig.AccessoryNames)) {
+      return { ...DEFAULT_CONFIG, ...initialConfig };
+    }
+    return DEFAULT_CONFIG;
+  });
   const [isDragging, setIsDragging] = useState(false);
 
   const handleFileUpload = async (e) => {
@@ -182,10 +187,13 @@ export default function AccessoryConfig() {
       </div>
 
       <div className="preview-container">
-        <div className="panel actions">
-          <button className="btn btn-primary" onClick={exportConfig}>
-            💾 Export config.json
+        <div className="panel actions" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'center' }}>
+          <button className="btn btn-primary" onClick={exportConfig} style={{ width: '100%' }}>
+            💾 Download config.json
           </button>
+          <div className="help-text">
+            Save this file to your mod's directory to apply changes.
+          </div>
         </div>
       </div>
     </>

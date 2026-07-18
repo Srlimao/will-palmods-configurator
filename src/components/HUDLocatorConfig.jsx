@@ -156,8 +156,28 @@ const normalizeSection = (sectionName, inputSection, defaultSection) => {
   return section;
 };
 
-export default function HUDLocatorConfig() {
-  const [config, setConfig] = useState(DEFAULT_CONFIG);
+const normalizeConfig = (json) => {
+  if (!json) return DEFAULT_CONFIG;
+  return {
+    Global: {
+      ...DEFAULT_CONFIG.Global,
+      ...(json.Global || {})
+    },
+    Players: normalizeSection('Players', json.Players, DEFAULT_CONFIG.Players),
+    Relics: normalizeSection('Relics', json.Relics, DEFAULT_CONFIG.Relics),
+    Chests: normalizeSection('Chests', json.Chests, DEFAULT_CONFIG.Chests),
+    Eggs: normalizeSection('Eggs', json.Eggs, DEFAULT_CONFIG.Eggs),
+    Caves: normalizeSection('Caves', json.Caves, DEFAULT_CONFIG.Caves)
+  };
+};
+
+export default function HUDLocatorConfig({ initialConfig }) {
+  const [config, setConfig] = useState(() => {
+    if (initialConfig && (initialConfig.Global || initialConfig.Players || initialConfig.Relics)) {
+      return normalizeConfig(initialConfig);
+    }
+    return DEFAULT_CONFIG;
+  });
   const [activeTab, setActiveTab] = useState('Global');
   const [isDragging, setIsDragging] = useState(false);
 
@@ -188,17 +208,7 @@ export default function HUDLocatorConfig() {
   const processFile = async (file) => {
     try {
       const json = await readFileAsJson(file);
-      const normalized = {
-        Global: {
-          ...DEFAULT_CONFIG.Global,
-          ...(json.Global || {})
-        },
-        Players: normalizeSection('Players', json.Players, DEFAULT_CONFIG.Players),
-        Relics: normalizeSection('Relics', json.Relics, DEFAULT_CONFIG.Relics),
-        Chests: normalizeSection('Chests', json.Chests, DEFAULT_CONFIG.Chests),
-        Eggs: normalizeSection('Eggs', json.Eggs, DEFAULT_CONFIG.Eggs),
-        Caves: normalizeSection('Caves', json.Caves, DEFAULT_CONFIG.Caves)
-      };
+      const normalized = normalizeConfig(json);
       setConfig(normalized);
     } catch (err) {
       alert(err.message);
@@ -550,10 +560,13 @@ export default function HUDLocatorConfig() {
           <div className="preview-legend">Simulated overlay on standard 1080p screen space</div>
         </div>
 
-        <div className="panel actions">
-          <button className="btn btn-primary" onClick={exportConfig}>
-            💾 Export config.json
+        <div className="panel actions" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'center' }}>
+          <button className="btn btn-primary" onClick={exportConfig} style={{ width: '100%' }}>
+            💾 Download config.json
           </button>
+          <div className="help-text">
+            Save this file to your mod's directory to apply changes.
+          </div>
         </div>
       </div>
     </>
