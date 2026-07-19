@@ -20,6 +20,11 @@ export default function HUDPreview({ config }) {
       <div className={styles.panel}>
         <div className={styles.panelTitle}>🖥️ HUD Live Preview</div>
         <div className={styles.hudPreview}>
+          {!config.Global.Enabled && (
+            <div className={styles.disabledPreviewBanner}>
+              ⚠️ HUD Locator is Master Disabled
+            </div>
+          )}
           {config.Global.Enabled && config.Players.Enabled && (
             <div className={styles.hudLabel}>
               <div 

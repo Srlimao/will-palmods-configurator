@@ -325,15 +325,25 @@ export default function HUDLocatorConfig({ initialConfig, changelogData }) {
         </div>
 
         <div className={styles.tabs}>
-          {['Global', 'Players', 'Relics', 'Chests', 'Eggs', 'Caves', 'Loot'].map(tab => (
-            <button 
-              key={tab}
-              className={`${styles.tabBtn} ${activeTab === tab ? styles.active : ''}`}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </button>
-          ))}
+          {['Global', 'Players', 'Relics', 'Chests', 'Eggs', 'Caves', 'Loot'].map(tab => {
+            const isEnabled = tab === 'Global' 
+              ? config.Global.Enabled 
+              : tab === 'Eggs' 
+                ? config.Eggs.Filter !== 'None' 
+                : (config[tab]?.Enabled ?? false);
+            return (
+              <button 
+                key={tab}
+                className={`${styles.tabBtn} ${activeTab === tab ? styles.active : ''} ${!isEnabled ? styles.disabledTab : ''}`}
+                onClick={() => setActiveTab(tab)}
+              >
+                <span className={styles.tabContent}>
+                  {tab}
+                  <span className={`${styles.statusDot} ${isEnabled ? styles.statusEnabled : styles.statusDisabled}`} />
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {activeTab === 'Global' ? (
