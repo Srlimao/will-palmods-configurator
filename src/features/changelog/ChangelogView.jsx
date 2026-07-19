@@ -37,7 +37,10 @@ export default function ChangelogView({ changelogData, isOpen, onClose }) {
                 key={index} 
                 className={`${styles.entry} ${index === 0 ? styles.entryFirst : ''}`}
               >
-                <div className={styles.date}>{entry.date}</div>
+                <div className={styles.dateRow}>
+                  <span className={styles.date}>{entry.date}</span>
+                  {index === 0 && <span className={styles.latestBadge}>Latest Update</span>}
+                </div>
                 <ul className={styles.list}>
                   {entry.changes.flatMap(parseChanges).map((change, cIdx) => (
                     <li key={cIdx} className={styles.item}>

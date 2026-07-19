@@ -127,9 +127,37 @@
   border: 2px solid var(--bg-dark);
 }
 
+.entryFirst {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.06) 0%, rgba(59, 130, 246, 0.01) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-left: 3px solid var(--accent-primary);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-left: 0;
+  margin-bottom: 0.25rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
 .entryFirst::before {
-  background: var(--accent-primary);
-  box-shadow: 0 0 8px var(--accent-glow);
+  display: none;
+}
+
+.dateRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.latestBadge {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
 }
 
 .date {
