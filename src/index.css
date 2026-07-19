@@ -2,8 +2,8 @@
 
 :root {
   --bg-dark: #070b19;
-  --bg-card: rgba(255, 255, 255, 0.07);
-  --bg-preview: rgba(10, 20, 40, 0.45);
+  --bg-card: rgba(10, 15, 30, 0.65);
+  --bg-preview: rgba(10, 20, 40, 0.55);
   --border-color: rgba(255, 255, 255, 0.16);
   --text-main: #f8fafc;
   --text-sub: #cbd5e1;
@@ -23,15 +23,29 @@
 }
 
 body {
+  position: relative;
+  min-height: 100vh;
+  padding: 1.5rem 1.5rem;
+  color: var(--text-main);
+  font-family: var(--font-jakarta);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
   background-image: url('./assets/palworld_bg.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
-  color: var(--text-main);
-  font-family: var(--font-jakarta);
-  min-height: 100vh;
-  padding: 1.5rem 1.5rem;
+  filter: blur(8px) brightness(0.65);
+  transform: scale(1.04);
 }
 
 .container {

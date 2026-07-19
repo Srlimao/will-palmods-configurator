@@ -1,7 +1,7 @@
 .panel {
   position: relative;
   z-index: 5;
-  background: rgba(15, 23, 42, 0.45);
+  background: var(--bg-card);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1.5px solid rgba(255, 255, 255, 0.2);
@@ -184,7 +184,7 @@
   flex-direction: column;
   gap: 0.85rem;
   align-items: center;
-  background: rgba(15, 23, 42, 0.45);
+  background: var(--bg-card);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1.5px solid rgba(255, 255, 255, 0.2);
