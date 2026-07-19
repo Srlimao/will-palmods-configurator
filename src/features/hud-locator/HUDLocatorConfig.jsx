@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { downloadJson, readFileAsJson } from '../../components/shared/utils/configParsers';
 import HUDPreview from './components/HUDPreview';
 import GlobalTab from './components/GlobalTab';
 import SectionTab from './components/SectionTab';
+import ChangelogView from '../changelog/ChangelogView';
 import styles from './styles/hud.module.css';
 
 const DEFAULT_CONFIG = {
@@ -197,7 +198,7 @@ const normalizeConfig = (json) => {
   };
 };
 
-export default function HUDLocatorConfig({ initialConfig }) {
+export default function HUDLocatorConfig({ initialConfig, changelogData }) {
   const [config, setConfig] = useState(() => {
     if (initialConfig && (initialConfig.Global || initialConfig.Players || initialConfig.Relics)) {
       return normalizeConfig(initialConfig);
@@ -208,6 +209,23 @@ export default function HUDLocatorConfig({ initialConfig }) {
   const [isDragging, setIsDragging] = useState(false);
   const [copied, setCopied] = useState(false);
   const [toastPos, setToastPos] = useState(null);
+  const [showChangelog, setShowChangelog] = useState(false);
+  const [hasUpdateAlert, setHasUpdateAlert] = useState(false);
+
+  useEffect(() => {
+    if (changelogData?.version) {
+      const lastRead = localStorage.getItem('mcm_read_version_HUDLocator');
+      setHasUpdateAlert(!lastRead || lastRead !== changelogData.version);
+    }
+  }, [changelogData]);
+
+  const openChangelog = () => {
+    setShowChangelog(true);
+    if (hasUpdateAlert && changelogData?.version) {
+      setHasUpdateAlert(false);
+      localStorage.setItem('mcm_read_version_HUDLocator', changelogData.version);
+    }
+  };
 
   const handleCopyPath = (e) => {
     navigator.clipboard.writeText("%localappdata%\\Pal\\Saved\\Mods\\HUDLocator");
@@ -261,7 +279,28 @@ export default function HUDLocatorConfig({ initialConfig }) {
   return (
     <>
       <div className={styles.panel}>
-        <div className={styles.panelTitle}>⚙️ HUD Locator Settings</div>
+        <div className={styles.panelTitle}>
+          <span>⚙️ HUD Locator Settings</span>
+          <div className={styles.changelogBtnWrapper}>
+            {hasUpdateAlert && (
+              <div className={styles.tooltip}>
+                An update has been detected. Please ensure this mod is updated to the latest version before proceeding.
+                <div className={styles.tooltipArrow}></div>
+              </div>
+            )}
+            <button 
+              className={styles.btnSecondary} 
+              style={{ fontSize: '0.8rem', padding: '0.35rem 0.75rem', width: 'auto', borderRadius: '20px' }} 
+              onClick={openChangelog}
+            >
+              <span className={styles.iconWrapper}>
+                📜
+                {hasUpdateAlert && <span className={styles.redDot}></span>}
+              </span>
+              Changelog
+            </button>
+          </div>
+        </div>
         
         <div 
           className={`${styles.dropZone} ${isDragging ? styles.dragover : ''}`} 
@@ -341,6 +380,12 @@ export default function HUDLocatorConfig({ initialConfig }) {
           Path copied!
         </div>
       )}
+
+      <ChangelogView 
+        changelogData={changelogData} 
+        isOpen={showChangelog} 
+        onClose={() => setShowChangelog(false)} 
+      />
     </>
   );
 }

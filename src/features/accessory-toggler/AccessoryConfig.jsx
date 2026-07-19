@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { hexToRgbaObject, rgbaObjectToHex } from '../../components/shared/utils/colorUtils';
 import { downloadJson, readFileAsJson } from '../../components/shared/utils/configParsers';
 import KeyBindInput from '../../components/shared/KeyBindInput/KeyBindInput';
+import ChangelogView from '../changelog/ChangelogView';
 import styles from './styles/accessory.module.css';
 
 const DEFAULT_CONFIG = {
@@ -32,7 +33,7 @@ const DEFAULT_CONFIG = {
   BorderColor: { R: 0.0, G: 0.95, B: 1.0, A: 0.6 }
 };
 
-export default function AccessoryConfig({ initialConfig }) {
+export default function AccessoryConfig({ initialConfig, changelogData }) {
   const [config, setConfig] = useState(() => {
     if (initialConfig) {
       return { ...DEFAULT_CONFIG, ...initialConfig };
@@ -42,6 +43,23 @@ export default function AccessoryConfig({ initialConfig }) {
   const [isDragging, setIsDragging] = useState(false);
   const [copied, setCopied] = useState(false);
   const [toastPos, setToastPos] = useState(null);
+  const [showChangelog, setShowChangelog] = useState(false);
+  const [hasUpdateAlert, setHasUpdateAlert] = useState(false);
+
+  useEffect(() => {
+    if (changelogData?.version) {
+      const lastRead = localStorage.getItem('mcm_read_version_AccessoryToggler');
+      setHasUpdateAlert(!lastRead || lastRead !== changelogData.version);
+    }
+  }, [changelogData]);
+
+  const openChangelog = () => {
+    setShowChangelog(true);
+    if (hasUpdateAlert && changelogData?.version) {
+      setHasUpdateAlert(false);
+      localStorage.setItem('mcm_read_version_AccessoryToggler', changelogData.version);
+    }
+  };
 
   const handleCopyPath = (e) => {
     navigator.clipboard.writeText("%localappdata%\\Pal\\Saved\\Mods\\AccessoryToggler");
@@ -86,7 +104,28 @@ export default function AccessoryConfig({ initialConfig }) {
   return (
     <>
       <div className={styles.panel}>
-        <div className={styles.panelTitle}>⚙️ Accessory Toggler Settings</div>
+        <div className={styles.panelTitle}>
+          <span>⚙️ Accessory Toggler Settings</span>
+          <div className={styles.changelogBtnWrapper}>
+            {hasUpdateAlert && (
+              <div className={styles.tooltip}>
+                An update has been detected. Please ensure this mod is updated to the latest version before proceeding.
+                <div className={styles.tooltipArrow}></div>
+              </div>
+            )}
+            <button 
+              className={styles.btnSecondary} 
+              style={{ fontSize: '0.8rem', padding: '0.35rem 0.75rem', width: 'auto', borderRadius: '20px' }} 
+              onClick={openChangelog}
+            >
+              <span className={styles.iconWrapper}>
+                📜
+                {hasUpdateAlert && <span className={styles.redDot}></span>}
+              </span>
+              Changelog
+            </button>
+          </div>
+        </div>
 
         <div 
           className={`${styles.dropZone} ${isDragging ? styles.dragover : ''}`} 
@@ -228,6 +267,12 @@ export default function AccessoryConfig({ initialConfig }) {
           Path copied!
         </div>
       )}
+
+      <ChangelogView 
+        changelogData={changelogData} 
+        isOpen={showChangelog} 
+        onClose={() => setShowChangelog(false)} 
+      />
     </>
   );
 }
