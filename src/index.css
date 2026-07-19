@@ -23,21 +23,33 @@
 }
 
 body {
-  background-image: url('./assets/palworld_bg.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  color: var(--text-main);
-  font-family: var(--font-jakarta);
+  position: relative;
   min-height: 100vh;
   padding: 1.5rem 1.5rem;
+  color: var(--text-main);
+  font-family: var(--font-jakarta);
+  overflow-x: hidden;
   text-shadow: 
     -1.5px -1.5px 0 rgba(0, 0, 0, 0.8), 
      1.5px -1.5px 0 rgba(0, 0, 0, 0.8), 
     -1.5px  1.5px 0 rgba(0, 0, 0, 0.8), 
      1.5px  1.5px 0 rgba(0, 0, 0, 0.8),
      0 2px 4px rgba(0, 0, 0, 0.95);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-image: url('./assets/palworld_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 .container {
