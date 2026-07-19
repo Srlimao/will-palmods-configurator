@@ -127,6 +127,16 @@ export default function AccessoryConfig({ initialConfig, changelogData }) {
           </div>
         </div>
 
+        <div className={styles.pathCopyContainer} onClick={handleCopyPath} title="Click to copy path" style={{ marginBottom: '1rem' }}>
+          <span className={styles.pathText}>
+            %localappdata%\Pal\Saved\Mods\AccessoryToggler
+          </span>
+          <span className={styles.copyLabel}>Copy Path</span>
+          <span className={styles.copyIconWrapper}>
+            {copied ? '✅' : '📋'}
+          </span>
+        </div>
+
         <div 
           className={`${styles.dropZone} ${isDragging ? styles.dragover : ''}`} 
           onClick={() => document.getElementById('acc-file-input').click()} 
@@ -142,9 +152,6 @@ export default function AccessoryConfig({ initialConfig, changelogData }) {
           <input type="file" id="acc-file-input" accept=".json" style={{ display: 'none' }} onChange={handleFileUpload} />
           <div className={styles.dropZoneText}>
             Drag & drop your <strong>config.json</strong> here or <strong>Click to Browse</strong>
-          </div>
-          <div className={styles.dropZoneHint}>
-            Note: In-game configuration is loaded from: <code>%localappdata%\Pal\Saved\Mods\AccessoryToggler\config.json</code>
           </div>
         </div>
 
@@ -238,15 +245,6 @@ export default function AccessoryConfig({ initialConfig, changelogData }) {
 
       <div className={styles.previewContainer}>
         <div className={`${styles.panel} ${styles.actions}`}>
-          <div className={styles.pathCopyContainer} onClick={handleCopyPath} title="Click to copy path">
-            <span className={styles.pathText}>
-              %localappdata%\Pal\Saved\Mods\AccessoryToggler
-            </span>
-            <span className={styles.copyLabel}>Copy Path</span>
-            <span className={styles.copyIconWrapper}>
-              {copied ? '✅' : '📋'}
-            </span>
-          </div>
           <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={exportConfig}>
             💾 Download config.json
           </button>

@@ -110,6 +110,16 @@ export default function HUDLocatorConfig({ initialConfig, changelogData }) {
           </div>
         </div>
         
+        <div className={styles.pathCopyContainer} onClick={handleCopyPath} title="Click to copy path" style={{ marginBottom: '1rem' }}>
+          <span className={styles.pathText}>
+            %localappdata%\Pal\Saved\Mods\HUDLocator
+          </span>
+          <span className={styles.copyLabel}>Copy Path</span>
+          <span className={styles.copyIconWrapper}>
+            {copied ? '✅' : '📋'}
+          </span>
+        </div>
+
         <div 
           className={`${styles.dropZone} ${isDragging ? styles.dragover : ''}`} 
           onClick={() => document.getElementById('hud-file-input').click()} 
@@ -125,9 +135,6 @@ export default function HUDLocatorConfig({ initialConfig, changelogData }) {
           <input type="file" id="hud-file-input" accept=".json" style={{ display: 'none' }} onChange={handleFileUpload} />
           <div className={styles.dropZoneText}>
             Drag & drop your <strong>config.json</strong> here or <strong>Click to Browse</strong>
-          </div>
-          <div className={styles.dropZoneHint}>
-            Note: In-game configuration is loaded from: <code>%localappdata%\Pal\Saved\Mods\HUDLocator\config.json</code>
           </div>
         </div>
 
@@ -179,15 +186,6 @@ export default function HUDLocatorConfig({ initialConfig, changelogData }) {
         <HUDPreview config={config} />
         
         <div className={`${styles.panel} ${styles.actions}`}>
-          <div className={styles.pathCopyContainer} onClick={handleCopyPath} title="Click to copy path">
-            <span className={styles.pathText}>
-              %localappdata%\Pal\Saved\Mods\HUDLocator
-            </span>
-            <span className={styles.copyLabel}>Copy Path</span>
-            <span className={styles.copyIconWrapper}>
-              {copied ? '✅' : '📋'}
-            </span>
-          </div>
           <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => downloadJson(config, 'config.json')}>
             💾 Download config.json
           </button>
