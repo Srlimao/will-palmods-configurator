@@ -70,9 +70,15 @@
   "HUDLocator": {
     "id": "HUDLocator",
     "name": "HUD Locator All in 1 (Cave, Effigy, Eggs, Chests, Players)",
-    "version": "2.3.0",
+    "version": "2.4.0",
     "publishedFileId": "3764265846",
     "entries": [
+      {
+        "date": "19 Jul @ 7:06am",
+        "changes": [
+          "- Added option to filter Chest,Junk or both"
+        ]
+      },
       {
         "date": "19 Jul @ 5:17am",
         "changes": [
@@ -125,12 +131,6 @@
         "date": "16 Jul @ 2:00pm",
         "changes": [
           "- Added key remap options"
-        ]
-      },
-      {
-        "date": "15 Jul @ 8:25am",
-        "changes": [
-          "Improved Translation and settings for forced language"
         ]
       }
     ]
