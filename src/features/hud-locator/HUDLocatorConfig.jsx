@@ -28,8 +28,8 @@ const DEFAULT_CONFIG = {
       FontScale: 1.2,
       SmallFontScale: 0.9,
       TextOffsetZ: 120.0,
-      NameColor: { R: 0.0, G: 0.0, B: 0.0, A: 1.0 },
-      DistColor: { R: 0.0, G: 0.0, B: 0.0, A: 1.0 },
+      NameColor: { R: 1.0, G: 1.0, B: 1.0, A: 1.0 },
+      DistColor: { R: 1.0, G: 1.0, B: 1.0, A: 1.0 },
       BoxColor: { R: 0.8, G: 0.8, B: 1.0, A: 1.0 },
       BorderColor: { R: 0.0, G: 0.0, B: 0.0, A: 1.0 },
       BorderWidth: 1.5,
@@ -116,7 +116,7 @@ const DEFAULT_CONFIG = {
     }
   },
   Loot: {
-    Enabled: true,
+    Enabled: false,
     MaxDistance: 15000.0,
     Filters: [],
     Style: {
