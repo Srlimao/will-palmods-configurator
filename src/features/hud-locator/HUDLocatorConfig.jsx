@@ -138,6 +138,15 @@ export default function HUDLocatorConfig({ initialConfig, changelogData }) {
               : tab === 'Eggs' 
                 ? config.Eggs.Filter !== 'None' 
                 : (config[tab]?.Enabled ?? false);
+            const tabIcons = {
+              Global: '🌐',
+              Players: '👥',
+              Relics: '🔥',
+              Chests: '📦',
+              Eggs: '🥚',
+              Caves: '🪨',
+              Loot: '💎'
+            };
             return (
               <button 
                 key={tab}
@@ -145,7 +154,8 @@ export default function HUDLocatorConfig({ initialConfig, changelogData }) {
                 onClick={() => setActiveTab(tab)}
               >
                 <span className={styles.tabContent}>
-                  {tab}
+                  <span>{tabIcons[tab]}</span>
+                  <span>{tab}</span>
                   <span className={`${styles.statusDot} ${isEnabled ? styles.statusEnabled : styles.statusDisabled}`} />
                 </span>
               </button>

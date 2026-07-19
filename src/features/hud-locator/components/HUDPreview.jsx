@@ -31,7 +31,7 @@ export default function HUDPreview({ config }) {
                 className={config.Players.Style.DrawBox ? styles.nameplateBox : `${styles.nameplateBox} ${styles.itemLabel}`} 
                 style={getPreviewStyle('Players')}
               >
-                <span className={styles.nameplateName} style={{ color: getTextColor(config.Players.Style.NameColor), fontSize: `${config.Players.Style.FontScale}em` }}>@ PalFriend</span>
+                <span className={styles.nameplateName} style={{ color: getTextColor(config.Players.Style.NameColor), fontSize: `${config.Players.Style.FontScale}em` }}>👤 @ PalFriend</span>
                 <span className={styles.nameplateDist} style={{ color: getTextColor(config.Players.Style.DistColor), fontSize: `${config.Players.Style.SmallFontScale}em` }}>
                   {config.Players.Style.DrawBox ? '156m' : '[156m]'}
                 </span>
@@ -45,7 +45,7 @@ export default function HUDPreview({ config }) {
                 className={config.Relics.Style.DrawBox ? styles.nameplateBox : `${styles.nameplateBox} ${styles.itemLabel}`} 
                 style={getPreviewStyle('Relics')}
               >
-                <span className={styles.nameplateName} style={{ color: getTextColor(config.Relics.Style.NameColor), fontSize: `${config.Relics.Style.FontScale}em` }}>Relic</span>
+                <span className={styles.nameplateName} style={{ color: getTextColor(config.Relics.Style.NameColor), fontSize: `${config.Relics.Style.FontScale}em` }}>🔥 Relic</span>
                 <span className={styles.nameplateDist} style={{ color: getTextColor(config.Relics.Style.DistColor), fontSize: `${config.Relics.Style.SmallFontScale}em` }}>
                   {config.Relics.Style.DrawBox ? '45m' : '[45m]'}
                 </span>
@@ -59,7 +59,7 @@ export default function HUDPreview({ config }) {
                 className={config.Chests.Style.DrawBox ? styles.nameplateBox : `${styles.nameplateBox} ${styles.itemLabel}`} 
                 style={getPreviewStyle('Chests')}
               >
-                <span className={styles.nameplateName} style={{ color: getTextColor(config.Chests.Style.NameColor), fontSize: `${config.Chests.Style.FontScale}em` }}>Chest</span>
+                <span className={styles.nameplateName} style={{ color: getTextColor(config.Chests.Style.NameColor), fontSize: `${config.Chests.Style.FontScale}em` }}>📦 Chest</span>
                 <span className={styles.nameplateDist} style={{ color: getTextColor(config.Chests.Style.DistColor), fontSize: `${config.Chests.Style.SmallFontScale}em` }}>
                   {config.Chests.Style.DrawBox ? '12m' : '[12m]'}
                 </span>
@@ -73,7 +73,7 @@ export default function HUDPreview({ config }) {
                 className={config.Eggs.Style.DrawBox ? styles.nameplateBox : `${styles.nameplateBox} ${styles.itemLabel}`} 
                 style={getPreviewStyle('Eggs')}
               >
-                <span className={styles.nameplateName} style={{ color: getTextColor(config.Eggs.Style.NameColor), fontSize: `${config.Eggs.Style.FontScale}em` }}>Egg</span>
+                <span className={styles.nameplateName} style={{ color: getTextColor(config.Eggs.Style.NameColor), fontSize: `${config.Eggs.Style.FontScale}em` }}>🥚 Egg</span>
                 <span className={styles.nameplateDist} style={{ color: getTextColor(config.Eggs.Style.DistColor), fontSize: `${config.Eggs.Style.SmallFontScale}em` }}>
                   {config.Eggs.Style.DrawBox ? '8m' : '[8m]'}
                 </span>
@@ -87,7 +87,7 @@ export default function HUDPreview({ config }) {
                 className={config.Caves.Style.DrawBox ? styles.nameplateBox : `${styles.nameplateBox} ${styles.itemLabel}`} 
                 style={getPreviewStyle('Caves')}
               >
-                <span className={styles.nameplateName} style={{ color: getTextColor(config.Caves.Style.NameColor), fontSize: `${config.Caves.Style.FontScale}em` }}>Cave</span>
+                <span className={styles.nameplateName} style={{ color: getTextColor(config.Caves.Style.NameColor), fontSize: `${config.Caves.Style.FontScale}em` }}>🪨 Cave</span>
                 <span className={styles.nameplateDist} style={{ color: getTextColor(config.Caves.Style.DistColor), fontSize: `${config.Caves.Style.SmallFontScale}em` }}>
                   {config.Caves.Style.DrawBox ? '110m' : '[110m]'}
                 </span>
@@ -101,7 +101,7 @@ export default function HUDPreview({ config }) {
                 className={config.Loot.Style.DrawBox ? styles.nameplateBox : `${styles.nameplateBox} ${styles.itemLabel}`} 
                 style={getPreviewStyle('Loot')}
               >
-                <span className={styles.nameplateName} style={{ color: getTextColor(config.Loot.Style.NameColor), fontSize: `${config.Loot.Style.FontScale}em` }}>Mega Sphere</span>
+                <span className={styles.nameplateName} style={{ color: getTextColor(config.Loot.Style.NameColor), fontSize: `${config.Loot.Style.FontScale}em` }}>💎 Mega Sphere</span>
                 <span className={styles.nameplateDist} style={{ color: getTextColor(config.Loot.Style.DistColor), fontSize: `${config.Loot.Style.SmallFontScale}em` }}>
                   {config.Loot.Style.DrawBox ? '23m' : '[23m]'}
                 </span>

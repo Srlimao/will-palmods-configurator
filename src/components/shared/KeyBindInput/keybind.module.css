@@ -11,41 +11,53 @@
 
 .select {
   flex-grow: 1;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  padding: 0.5rem;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
   color: var(--text-main);
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s;
 }
 
 .select:hover {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+  background: rgba(15, 23, 42, 0.55);
 }
 
 .btnRecord {
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  color: #60a5fa;
-  padding: 0.5rem;
-  border-radius: 4px;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1.5px solid rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+  padding: 0.65rem 0.9rem;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.9em;
+  transition: all 0.3s;
+  font-size: 0.95em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .btnRecord:hover {
-  background: rgba(59, 130, 246, 0.2);
+  background: rgba(56, 189, 248, 0.3);
+  border-color: #38bdf8;
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 .btnRecord.listening {
   background: rgba(239, 68, 68, 0.2);
-  border-color: rgba(239, 68, 68, 0.4);
+  border-color: #ef4444;
   color: #f87171;
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
   animation: pulse 1.5s infinite;
 }
 
@@ -66,22 +78,30 @@
   top: 100%;
   left: 0;
   right: 0;
-  margin-top: 4px;
-  background: #1a1d2d;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
+  margin-top: 6px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
   z-index: 100;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow: hidden;
 }
 
 .search {
   width: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.35);
   border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.75rem;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.15);
+  padding: 0.75rem 0.9rem;
   color: var(--text-main);
   outline: none;
+  font-family: var(--font-jakarta);
+}
+
+.search:focus {
+  background: rgba(0, 0, 0, 0.45);
 }
 
 .list {
@@ -90,15 +110,17 @@
 }
 
 .item {
-  padding: 0.5rem 0.75rem;
+  padding: 0.6rem 0.9rem;
   cursor: pointer;
   font-size: 0.9em;
   color: var(--text-sub);
+  transition: all 0.2s;
 }
 
 .item:hover, .item.selected {
-  background: rgba(59, 130, 246, 0.2);
+  background: rgba(56, 189, 248, 0.25);
   color: var(--text-main);
+  padding-left: 1.15rem;
 }
 
 .noResults {

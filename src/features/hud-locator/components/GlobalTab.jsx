@@ -45,7 +45,10 @@ export default function GlobalTab({ config, updateSectionConfig }) {
       </div>
       <div className={styles.sectionTitle}>⌨️ Keybinds</div>
       <div className={styles.keybindWarning}>
-        ⚠️ Changing keybinds requires a game restart to take effect (does not work with Alt+R config reload).
+        <span className={styles.warningIcon}>🐑</span>
+        <span className={styles.warningText}>
+          Changing keybinds requires a game restart to take effect (does not work with Alt+R config reload).
+        </span>
       </div>
       <div className={styles.formRow}>
         <div className={styles.formGroup}>
