@@ -17,6 +17,9 @@ export default function GlobalTab({ config, updateSectionConfig }) {
         </div>
       </div>
       <div className={styles.sectionTitle}>⌨️ Keybinds</div>
+      <div className={styles.keybindWarning}>
+        ⚠️ Changing keybinds requires a game restart to take effect (does not work with Alt+R config reload).
+      </div>
       <div className={styles.formRow}>
         <div className={styles.formGroup}>
           <label>Toggle Menu Key</label>

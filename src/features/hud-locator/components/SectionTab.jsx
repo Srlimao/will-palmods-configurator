@@ -30,7 +30,9 @@ export default function SectionTab({ activeTab, config, updateSectionConfig, upd
         {activeTab !== 'Players' && activeTab !== 'Eggs' && (
           <div className={`${styles.formGroup} ${styles.checkboxGroup}`} onClick={() => updateSectionConfig(activeTab, 'Enabled', !sectionData.Enabled)}>
             <input type="checkbox" checked={sectionData.Enabled} readOnly />
-            <span className={styles.checkboxText}>Show {activeTab}</span>
+            <span className={styles.checkboxText}>
+              {activeTab === 'Loot' ? 'Show Ground Loot' : `Show ${activeTab}`}
+            </span>
           </div>
         )}
 
@@ -123,6 +125,75 @@ export default function SectionTab({ activeTab, config, updateSectionConfig, upd
           </div>
         </div>
       </div>
+
+      {activeTab === 'Loot' && (
+        <div className={styles.formRowFull}>
+          <div className={styles.formGroup}>
+            <label>Item Name / ID Filters</label>
+            <div className={styles.filterInfoBox}>
+              💡 <strong>How filters work:</strong>
+              <ul>
+                <li>Matches either the item name in your language or its internal English code name.</li>
+                <li>Matches are partial (e.g. <code>Pald</code> matches <code>Paldium Fragment</code>) and not case-sensitive.</li>
+                <li><strong>Examples:</strong> <code>Sphere</code>, <code>Lotus</code></li>
+              </ul>
+            </div>
+            <div className={styles.filterListContainer}>
+              <div className={styles.tagInputWrapper}>
+                <input 
+                  type="text" 
+                  placeholder="Type a filter and press Enter (e.g., Sphere)" 
+                  className={styles.tagInput}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      const val = e.target.value.trim();
+                      if (val && !(sectionData.Filters || []).includes(val)) {
+                        updateSectionConfig('Loot', 'Filters', [...(sectionData.Filters || []), val]);
+                        e.target.value = '';
+                      }
+                    }
+                  }}
+                />
+                <button 
+                  type="button" 
+                  className={styles.addTagBtn}
+                  onClick={e => {
+                    const input = e.target.previousSibling;
+                    const val = input.value.trim();
+                    if (val && !(sectionData.Filters || []).includes(val)) {
+                      updateSectionConfig('Loot', 'Filters', [...(sectionData.Filters || []), val]);
+                      input.value = '';
+                    }
+                  }}
+                >
+                  Add
+                </button>
+              </div>
+              <div className={styles.tagsContainer}>
+                {sectionData.Filters && sectionData.Filters.length > 0 ? (
+                  sectionData.Filters.map((filter, index) => (
+                    <span key={index} className={styles.tagBadge}>
+                      {filter}
+                      <button 
+                        type="button" 
+                        className={styles.removeTagBtn}
+                        onClick={() => {
+                          updateSectionConfig('Loot', 'Filters', sectionData.Filters.filter((_, i) => i !== index));
+                        }}
+                      >
+                        &times;
+                      </button>
+                    </span>
+                  ))
+                ) : (
+                  <span className={styles.noTagsHint}>Showing all ground loot (no filters applied)</span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

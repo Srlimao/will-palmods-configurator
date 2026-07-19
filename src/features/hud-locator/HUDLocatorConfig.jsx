@@ -114,6 +114,26 @@ const DEFAULT_CONFIG = {
       FontCharW: 8.0,
       FontLineH: 12.0
     }
+  },
+  Loot: {
+    Enabled: true,
+    MaxDistance: 15000.0,
+    Filters: [],
+    Style: {
+      DrawBox: false,
+      FontScale: 1.2,
+      SmallFontScale: 0.9,
+      TextOffsetZ: 80.0,
+      NameColor: { R: 0.2, G: 0.9, B: 0.4, A: 1.0 },
+      DistColor: { R: 0.2, G: 0.9, B: 0.4, A: 1.0 },
+      BoxColor: { R: 0.8, G: 1.0, B: 0.8, A: 1.0 },
+      BorderColor: { R: 0.0, G: 0.0, B: 0.0, A: 1.0 },
+      BorderWidth: 1.5,
+      BoxPadX: 10.0,
+      BoxPadY: 6.0,
+      FontCharW: 8.0,
+      FontLineH: 12.0
+    }
   }
 };
 
@@ -149,12 +169,15 @@ const normalizeSection = (sectionName, inputSection, defaultSection) => {
     ...defaultSection.Style,
     ...section.Style
   };
-  const rootKeys = ['Enabled', 'Filter', 'MaxDistance', 'GraceRadiusM'];
+  const rootKeys = ['Enabled', 'Filter', 'Filters', 'MaxDistance', 'GraceRadiusM'];
   rootKeys.forEach(key => {
     if (section[key] === undefined && defaultSection[key] !== undefined) {
       section[key] = defaultSection[key];
     }
   });
+  if (section.Filters && !Array.isArray(section.Filters)) {
+    section.Filters = [];
+  }
   return section;
 };
 
@@ -169,7 +192,8 @@ const normalizeConfig = (json) => {
     Relics: normalizeSection('Relics', json.Relics, DEFAULT_CONFIG.Relics),
     Chests: normalizeSection('Chests', json.Chests, DEFAULT_CONFIG.Chests),
     Eggs: normalizeSection('Eggs', json.Eggs, DEFAULT_CONFIG.Eggs),
-    Caves: normalizeSection('Caves', json.Caves, DEFAULT_CONFIG.Caves)
+    Caves: normalizeSection('Caves', json.Caves, DEFAULT_CONFIG.Caves),
+    Loot: normalizeSection('Loot', json.Loot, DEFAULT_CONFIG.Loot)
   };
 };
 
@@ -249,7 +273,7 @@ export default function HUDLocatorConfig({ initialConfig }) {
         </div>
 
         <div className={styles.tabs}>
-          {['Global', 'Players', 'Relics', 'Chests', 'Eggs', 'Caves'].map(tab => (
+          {['Global', 'Players', 'Relics', 'Chests', 'Eggs', 'Caves', 'Loot'].map(tab => (
             <button 
               key={tab}
               className={`${styles.tabBtn} ${activeTab === tab ? styles.active : ''}`}
