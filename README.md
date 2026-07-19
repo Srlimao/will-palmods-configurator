@@ -31,13 +31,11 @@ This project was bootstrapped with [Vite](https://vitejs.dev/).
    ```
    The static files will be generated in the `dist` directory, ready to be hosted on any static hosting provider (e.g., GitHub Pages, Vercel, Netlify).
 
-## Architecture & Branch Structure
+## Architecture
 
-### Workspace Directories
-- `react-app/`: The frontend application (and Git repository root).
-- `backend/`: Node.js Express server providing Steam auth and database storage (not tracked by this repository).
-- `docs/`: Shared mod files and centralized settings metadata (not tracked by this repository).
+This is a serverless, client-side web application. All configuration parsing, schema validation, and file generation are handled securely within the browser without any backend or external server dependencies.
 
-### Git Branches
-- `main` (Serverless): Production-ready, client-side only mode. Deployed to GitHub Pages. All configuration parsing, schema validation, and file generation are handled securely in-browser.
-- `cloud-sync` (Full Stack): Extends the frontend with Steam OpenID authentication and remote database synchronization, requiring a running `backend/` server instance.
+### Workspace Directory Structure
+- `src/`: The React source code containing the components, styles, features, and UI logic.
+- `docs/`: Sample configuration schemas and reference files (e.g. keycodes, API specs, and example mod configurations).
+- `public/`: Static assets for the React application.
