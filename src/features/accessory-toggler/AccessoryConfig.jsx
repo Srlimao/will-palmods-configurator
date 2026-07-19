@@ -40,6 +40,18 @@ export default function AccessoryConfig({ initialConfig }) {
     return DEFAULT_CONFIG;
   });
   const [isDragging, setIsDragging] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [toastPos, setToastPos] = useState(null);
+
+  const handleCopyPath = (e) => {
+    navigator.clipboard.writeText("%USERPROFILE%\\Documents\\My Games\\Palworld\\ModConfigs\\AccessoryToggler");
+    setCopied(true);
+    setToastPos({ x: e.clientX, y: e.clientY });
+    setTimeout(() => {
+      setCopied(false);
+      setToastPos(null);
+    }, 1500);
+  };
 
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
@@ -187,6 +199,15 @@ export default function AccessoryConfig({ initialConfig }) {
 
       <div className={styles.previewContainer}>
         <div className={`${styles.panel} ${styles.actions}`}>
+          <div className={styles.pathCopyContainer} onClick={handleCopyPath} title="Click to copy path">
+            <span className={styles.pathText}>
+              %USERPROFILE%\Documents\My Games\Palworld\ModConfigs\AccessoryToggler
+            </span>
+            <span className={styles.copyLabel}>Copy Path</span>
+            <span className={styles.copyIconWrapper}>
+              {copied ? '✅' : '📋'}
+            </span>
+          </div>
           <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={exportConfig}>
             💾 Download config.json
           </button>
@@ -198,6 +219,15 @@ export default function AccessoryConfig({ initialConfig }) {
           </div>
         </div>
       </div>
+
+      {toastPos && (
+        <div 
+          className={styles.cursorToast} 
+          style={{ left: toastPos.x + 12, top: toastPos.y - 12 }}
+        >
+          Path copied!
+        </div>
+      )}
     </>
   );
 }
