@@ -42,6 +42,19 @@ export default function SectionTab({ activeTab, config, updateSectionConfig, upd
         </div>
       </div>
 
+      {activeTab === 'Chests' && (
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label>Chest Filter</label>
+            <select value={sectionData.Filter || 'Both'} onChange={e => updateSectionConfig('Chests', 'Filter', e.target.value)}>
+              <option value="Both">Both (Standard & Junk)</option>
+              <option value="Chests">Chests Only</option>
+              <option value="Junk">Junk Only</option>
+            </select>
+          </div>
+        </div>
+      )}
+
       <div className={styles.formRow}>
         <div className={styles.formGroup}>
           <label>Max Range <span className="val-label">{sectionData.MaxDistance / 100}m</span></label>

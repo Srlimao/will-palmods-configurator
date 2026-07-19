@@ -61,6 +61,7 @@ const DEFAULT_CONFIG = {
   },
   Chests: {
     Enabled: true,
+    Filter: "Both",
     MaxDistance: 15000.0,
     Style: {
       DrawBox: false,
