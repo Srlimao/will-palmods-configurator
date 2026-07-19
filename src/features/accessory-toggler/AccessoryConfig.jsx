@@ -128,6 +128,9 @@ export default function AccessoryConfig({ initialConfig }) {
         </div>
 
         <div className={styles.sectionTitle}>⌨️ Keybinds</div>
+        <div className={styles.keybindWarning}>
+          ⚠️ Changing keybinds requires a game restart to take effect (does not work with Alt+R config reload).
+        </div>
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label>Toggle Edit Mode</label>
