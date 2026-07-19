@@ -210,7 +210,7 @@ export default function HUDLocatorConfig({ initialConfig }) {
   const [toastPos, setToastPos] = useState(null);
 
   const handleCopyPath = (e) => {
-    navigator.clipboard.writeText("%USERPROFILE%\\Documents\\My Games\\Palworld\\ModConfigs\\HUDLocator");
+    navigator.clipboard.writeText("%localappdata%\\Pal\\Saved\\Mods\\HUDLocator");
     setCopied(true);
     setToastPos({ x: e.clientX, y: e.clientY });
     setTimeout(() => {
@@ -280,7 +280,7 @@ export default function HUDLocatorConfig({ initialConfig }) {
             Drag & drop your <strong>config.json</strong> here or <strong>Click to Browse</strong>
           </div>
           <div className={styles.dropZoneHint}>
-            Note: In-game configuration is loaded from: <code>%USERPROFILE%\Documents\My Games\Palworld\ModConfigs\HUDLocator\config.json</code>
+            Note: In-game configuration is loaded from: <code>%localappdata%\Pal\Saved\Mods\HUDLocator\config.json</code>
           </div>
         </div>
 
@@ -314,7 +314,7 @@ export default function HUDLocatorConfig({ initialConfig }) {
         <div className={`${styles.panel} ${styles.actions}`}>
           <div className={styles.pathCopyContainer} onClick={handleCopyPath} title="Click to copy path">
             <span className={styles.pathText}>
-              %USERPROFILE%\Documents\My Games\Palworld\ModConfigs\HUDLocator
+              %localappdata%\Pal\Saved\Mods\HUDLocator
             </span>
             <span className={styles.copyLabel}>Copy Path</span>
             <span className={styles.copyIconWrapper}>
