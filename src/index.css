@@ -2,11 +2,11 @@
 
 :root {
   --bg-dark: #070b19;
-  --bg-card: rgba(255, 255, 255, 0.12);
+  --bg-card: rgba(12, 38, 64, 0.35);
   --bg-preview: rgba(10, 20, 40, 0.45);
-  --border-color: rgba(255, 255, 255, 0.2);
+  --border-color: rgba(56, 189, 248, 0.35);
   --text-main: #ffffff;
-  --text-sub: #cbd5e1;
+  --text-sub: #f1f5f9;
   
   --accent-primary: #38bdf8; /* Futuristic Sky Blue */
   --accent-success: #34d399; /* Emerald Green */
@@ -32,6 +32,12 @@ body {
   font-family: var(--font-jakarta);
   min-height: 100vh;
   padding: 1.5rem 1.5rem;
+  text-shadow: 
+    -1.5px -1.5px 0 rgba(0, 0, 0, 0.8), 
+     1.5px -1.5px 0 rgba(0, 0, 0, 0.8), 
+    -1.5px  1.5px 0 rgba(0, 0, 0, 0.8), 
+     1.5px  1.5px 0 rgba(0, 0, 0, 0.8),
+     0 2px 4px rgba(0, 0, 0, 0.95);
 }
 
 .container {
