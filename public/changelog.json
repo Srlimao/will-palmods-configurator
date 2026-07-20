@@ -67,6 +67,26 @@
       }
     ]
   },
+  "FreeCam": {
+    "id": "FreeCam",
+    "name": "Building Enhanced (Free Camera) - Beta version",
+    "version": "1.0.1",
+    "publishedFileId": "3768635785",
+    "entries": [
+      {
+        "date": "20 Jul @ 3:21pm",
+        "changes": [
+          "Fixed hologram visibility overrides, resolved sliding offset feedback loop, and fixed falling through foundations on menu exit."
+        ]
+      },
+      {
+        "date": "20 Jul @ 1:42pm",
+        "changes": [
+          "New"
+        ]
+      }
+    ]
+  },
   "HUDLocator": {
     "id": "HUDLocator",
     "name": "HUD Locator All in 1 (Cave, Effigy, Eggs, Chests, Players)",
