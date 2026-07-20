@@ -144,9 +144,9 @@
               "type": "color",
               "description": "RGBA color of the name / label text.",
               "default": {
-                "R": 0.0,
-                "G": 0.0,
-                "B": 0.0,
+                "R": 1.0,
+                "G": 1.0,
+                "B": 1.0,
                 "A": 1.0
               }
             },
@@ -154,9 +154,9 @@
               "type": "color",
               "description": "RGBA color of the distance / details text.",
               "default": {
-                "R": 0.0,
-                "G": 0.0,
-                "B": 0.0,
+                "R": 1.0,
+                "G": 1.0,
+                "B": 1.0,
                 "A": 1.0
               }
             },
@@ -174,9 +174,9 @@
               "type": "color",
               "description": "RGBA border outline color of the bounding box.",
               "default": {
-                "R": 0.0,
-                "G": 0.0,
-                "B": 0.0,
+                "R": 1.0,
+                "G": 1.0,
+                "B": 1.0,
                 "A": 1.0
               }
             },
