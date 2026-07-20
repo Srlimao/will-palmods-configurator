@@ -9,7 +9,8 @@ export default function KeyBindInput({ value, onChange }) {
   const containerRef = useRef(null);
 
   // Filter keycodes based on search
-  const filteredKeys = UE_KEYCODES.filter(k => k.toLowerCase().includes(search.toLowerCase()));
+  const searchLower = search.toLowerCase();
+  const filteredKeys = UE_KEYCODES.filter(k => k.toLowerCase().includes(searchLower));
 
   // Close dropdown on outside click
   useEffect(() => {
