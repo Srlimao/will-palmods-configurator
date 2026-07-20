@@ -16,6 +16,36 @@
   --font-jakarta: 'Plus Jakarta Sans', sans-serif;
 }
 
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+  overflow-y: scroll;
+}
+
+/* Modern soft custom scrollbars for Chromium browsers */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.45);
+  border-radius: 10px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -25,7 +55,7 @@
 body {
   position: relative;
   min-height: 100vh;
-  padding: 1.5rem 1.5rem;
+  padding: 0.85rem 1.5rem;
   color: var(--text-main);
   font-family: var(--font-jakarta);
   overflow-x: hidden;
@@ -58,7 +88,7 @@ body::before {
 }
 
 header {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
@@ -173,7 +203,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
   background: rgba(15, 23, 42, 0.45);
   padding: 0.4rem;
   border-radius: 30px;

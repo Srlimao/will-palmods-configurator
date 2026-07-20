@@ -6,6 +6,7 @@ import SectionTab from './components/SectionTab';
 import ChangelogView from '../changelog/ChangelogView';
 import styles from './styles/hud.module.css';
 import { DEFAULT_CONFIG, normalizeConfig } from './utils/hudConfigHelpers';
+import schemaData from './utils/HUDLocator.schema.json';
 export default function HUDLocatorConfig({ initialConfig, changelogData }) {
   const [config, setConfig] = useState(() => {
     if (initialConfig && (initialConfig.Global || initialConfig.Players || initialConfig.Relics)) {
@@ -26,6 +27,12 @@ export default function HUDLocatorConfig({ initialConfig, changelogData }) {
       setHasUpdateAlert(!lastRead || lastRead !== changelogData.version);
     }
   }, [changelogData]);
+
+  useEffect(() => {
+    if (!config.Global.Enabled && activeTab !== 'Global') {
+      setActiveTab('Global');
+    }
+  }, [config.Global.Enabled, activeTab]);
 
   const openChangelog = () => {
     setShowChangelog(true);
@@ -139,41 +146,46 @@ export default function HUDLocatorConfig({ initialConfig, changelogData }) {
         </div>
 
         <div className={styles.tabs}>
-          {['Global', 'Players', 'Relics', 'Chests', 'Eggs', 'Caves', 'Loot'].map(tab => {
-            const isEnabled = tab === 'Global' 
-              ? config.Global.Enabled 
-              : tab === 'Eggs' 
-                ? config.Eggs.Filter !== 'None' 
-                : (config[tab]?.Enabled ?? false);
-            const tabIcons = {
-              Global: '🌐',
-              Players: '👥',
-              Relics: '🔥',
-              Chests: '📦',
-              Eggs: '🥚',
-              Caves: '🪨',
-              Loot: '💎'
-            };
-            return (
-              <button 
-                key={tab}
-                className={`${styles.tabBtn} ${activeTab === tab ? styles.active : ''} ${!isEnabled ? styles.disabledTab : ''}`}
-                onClick={() => setActiveTab(tab)}
-              >
-                <span className={styles.tabContent}>
-                  <span>{tabIcons[tab]}</span>
-                  <span>{tab}</span>
-                  <span className={`${styles.statusDot} ${isEnabled ? styles.statusEnabled : styles.statusDisabled}`} />
-                </span>
-              </button>
-            );
-          })}
+          {Object.keys(schemaData.schema)
+            .filter(tab => config.Global.Enabled || tab === 'Global')
+            .map(tab => {
+              const section = config[tab];
+              const isEnabled = tab === 'Global' 
+                ? config.Global.Enabled 
+                : section?.Filter !== undefined 
+                  ? section.Filter !== 'None' 
+                  : (section?.Enabled ?? false);
+              const tabIcons = {
+                Global: '🌐',
+                Players: '👥',
+                Relics: '🔥',
+                Chests: '📦',
+                Eggs: '🥚',
+                Caves: '🪨',
+                Loot: '💎',
+                Notes: '📜'
+              };
+              return (
+                <button 
+                  key={tab}
+                  className={`${styles.tabBtn} ${activeTab === tab ? styles.active : ''} ${!isEnabled ? styles.disabledTab : ''}`}
+                  onClick={() => setActiveTab(tab)}
+                >
+                  <span className={styles.tabContent}>
+                    <span>{tabIcons[tab] || '⚙️'}</span>
+                    <span>{tab}</span>
+                    <span className={`${styles.statusDot} ${isEnabled ? styles.statusEnabled : styles.statusDisabled}`} />
+                  </span>
+                </button>
+              );
+            })}
         </div>
 
         {activeTab === 'Global' ? (
           <GlobalTab config={config} updateSectionConfig={updateSectionConfig} />
         ) : (
           <SectionTab 
+            key={activeTab}
             activeTab={activeTab} 
             config={config} 
             updateSectionConfig={updateSectionConfig} 
@@ -189,8 +201,14 @@ export default function HUDLocatorConfig({ initialConfig, changelogData }) {
           <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => downloadJson(config, 'config.json')}>
             💾 Download config.json
           </button>
-          <div className="help-text">
-            Save this file to your mod's directory to apply changes.
+          <div className={styles.pathCopyContainer} onClick={handleCopyPath} title="Click to copy path" style={{ marginTop: '0.75rem', marginBottom: '0.5rem', width: '100%', fontSize: '0.8rem' }}>
+            <span className={styles.pathText}>
+              %localappdata%\Pal\Saved\Mods\HUDLocator
+            </span>
+            <span className={styles.copyLabel}>Copy Path</span>
+            <span className={styles.copyIconWrapper}>
+              {copied ? '✅' : '📋'}
+            </span>
           </div>
           <div className="reload-tip">
             💡 Press <kbd>Alt</kbd> + <kbd>R</kbd> to reload the save in game.

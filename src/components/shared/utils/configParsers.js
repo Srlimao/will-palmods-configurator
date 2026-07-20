@@ -1,5 +1,4 @@
 export const downloadJson = (data, filename) => {
-  // Standard anchor tag download with a delay on revokeObjectURL to prevent UUID naming bug
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -11,7 +10,7 @@ export const downloadJson = (data, filename) => {
   setTimeout(() => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-  }, 250);
+  }, 60000); // 60-second delay guarantees the browser resolves the filename metadata before revocation
 };
 
 export const readFileAsJson = (file) => {

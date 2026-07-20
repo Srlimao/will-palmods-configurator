@@ -1,23 +1,58 @@
 import KeyBindInput from '../../../components/shared/KeyBindInput/KeyBindInput';
 import styles from '../styles/hud.module.css';
+import schemaData from '../utils/HUDLocator.schema.json';
 
 export default function GlobalTab({ config, updateSectionConfig }) {
+  const globalProps = schemaData.schema.Global.properties;
+
   return (
     <>
       <div className={styles.formRow}>
-        <div className={`${styles.formGroup} ${styles.checkboxGroup}`} onClick={() => updateSectionConfig('Global', 'Enabled', !config.Global.Enabled)}>
+        <div 
+          className={`${styles.formGroup} ${styles.checkboxGroup}`} 
+          onClick={() => updateSectionConfig('Global', 'Enabled', !config.Global.Enabled)}
+          title={globalProps.Enabled?.description}
+        >
           <input type="checkbox" checked={config.Global.Enabled} readOnly />
-          <span className={styles.checkboxText}>Master Enabled</span>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span className={styles.checkboxText}>Master Enabled</span>
+            {globalProps.Enabled?.description && (
+              <span className={styles.fieldHelpText} style={{ marginTop: '0.15rem', fontSize: '0.75rem' }}>
+                {globalProps.Enabled.description}
+              </span>
+            )}
+          </div>
         </div>
-        <div className={`${styles.formGroup} ${styles.checkboxGroup}`} onClick={() => updateSectionConfig('Global', 'Debug', !config.Global.Debug)}>
+        <div 
+          className={`${styles.formGroup} ${styles.checkboxGroup}`} 
+          onClick={() => updateSectionConfig('Global', 'Debug', !config.Global.Debug)}
+          title={globalProps.Debug?.description}
+        >
           <input type="checkbox" checked={config.Global.Debug || false} readOnly />
-          <span className={styles.checkboxText}>Debug Mode</span>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span className={styles.checkboxText}>Debug Mode</span>
+            {globalProps.Debug?.description && (
+              <span className={styles.fieldHelpText} style={{ marginTop: '0.15rem', fontSize: '0.75rem' }}>
+                {globalProps.Debug.description}
+              </span>
+            )}
+          </div>
         </div>
       </div>
       <div className={styles.formRow}>
         <div className={styles.formGroup}>
           <label>Scan Interval <span className="val-label">{config.Global.ScanIntervalMs}ms</span></label>
-          <input type="range" min="500" max="5000" step="100" value={config.Global.ScanIntervalMs} onChange={e => updateSectionConfig('Global', 'ScanIntervalMs', parseInt(e.target.value))} />
+          <input 
+            type="range" 
+            min={globalProps.ScanIntervalMs?.min ?? 500} 
+            max={globalProps.ScanIntervalMs?.max ?? 5000} 
+            step={globalProps.ScanIntervalMs?.step ?? 250} 
+            value={config.Global.ScanIntervalMs} 
+            onChange={e => updateSectionConfig('Global', 'ScanIntervalMs', parseInt(e.target.value))} 
+          />
+          {globalProps.ScanIntervalMs?.description && (
+            <div className={styles.fieldHelpText}>{globalProps.ScanIntervalMs.description}</div>
+          )}
         </div>
         <div className={styles.formGroup}>
           <label>Language</label>
@@ -41,9 +76,17 @@ export default function GlobalTab({ config, updateSectionConfig }) {
             <option value="tr">Turkish</option>
             <option value="pl">Polish</option>
           </select>
+          {globalProps.Language?.description && (
+            <div className={styles.fieldHelpText}>{globalProps.Language.description}</div>
+          )}
         </div>
       </div>
       <div className={styles.sectionTitle}>⌨️ Keybinds</div>
+      {globalProps.KeyBinds?.description && (
+        <div className={styles.fieldHelpText} style={{ marginBottom: '0.75rem', marginTop: '-0.25rem', paddingLeft: '2px' }}>
+          {globalProps.KeyBinds.description}
+        </div>
+      )}
       <div className={styles.keybindWarning}>
         <span className={styles.warningIcon}>🐑</span>
         <span className={styles.warningText}>

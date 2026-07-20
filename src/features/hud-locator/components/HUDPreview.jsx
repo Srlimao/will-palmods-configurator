@@ -108,6 +108,20 @@ export default function HUDPreview({ config }) {
               </div>
             </div>
           )}
+
+          {config.Global.Enabled && config.Notes && config.Notes.Enabled && (
+            <div className={styles.hudLabel} style={{ bottom: 100, right: 120 }}>
+              <div 
+                className={config.Notes.Style.DrawBox ? styles.nameplateBox : `${styles.nameplateBox} ${styles.itemLabel}`} 
+                style={getPreviewStyle('Notes')}
+              >
+                <span className={styles.nameplateName} style={{ color: getTextColor(config.Notes.Style.NameColor), fontSize: `${config.Notes.Style.FontScale}em` }}>📜 Memo Journal</span>
+                <span className={styles.nameplateDist} style={{ color: getTextColor(config.Notes.Style.DistColor), fontSize: `${config.Notes.Style.SmallFontScale}em` }}>
+                  {config.Notes.Style.DrawBox ? '72m' : '[72m]'}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
         <div className={styles.previewLegend}>Simulated overlay on standard 1080p screen space</div>
       </div>
