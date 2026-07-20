@@ -40,10 +40,13 @@ export default function AccessoryPreview({ config, updateConfig }) {
   const hudWidth = baseWidth * hudScale;
   const hudHeight = baseHeight * hudScale;
 
-  // Use config percentages, default to auto position if null
+  const isOutOfBounds = (config.HUDX !== null && (config.HUDX < 0 || config.HUDX > 100)) || 
+                        (config.HUDY !== null && (config.HUDY < 0 || config.HUDY > 100));
+
+  // Use config percentages, default to auto position if null, clamp if out of bounds for visual safety
   // Auto positions: Centered (50%) and near bottom (85%)
-  const hudPctX = config.HUDX !== null ? config.HUDX : 50.0;
-  const hudPctY = config.HUDY !== null ? config.HUDY : 85.0;
+  const hudPctX = config.HUDX !== null ? Math.max(0, Math.min(100, config.HUDX)) : 50.0;
+  const hudPctY = config.HUDY !== null ? Math.max(0, Math.min(100, config.HUDY)) : 85.0;
 
   const mockMaxX = 1920 - hudWidth;
   const mockMaxY = 1080 - hudHeight;
@@ -56,9 +59,9 @@ export default function AccessoryPreview({ config, updateConfig }) {
     e.preventDefault();
     setIsDragging(true);
 
-    // If starting drag from auto position, manifest it into manual coordinates
-    const initialX = config.HUDX !== null ? config.HUDX : 50.0;
-    const initialY = config.HUDY !== null ? config.HUDY : 85.0;
+    // If starting drag from auto position or out of bounds, clean it up
+    const initialX = config.HUDX !== null && !isOutOfBounds ? config.HUDX : 50.0;
+    const initialY = config.HUDY !== null && !isOutOfBounds ? config.HUDY : 85.0;
 
     dragStart.current = {
       mouseX: e.clientX,
@@ -67,7 +70,7 @@ export default function AccessoryPreview({ config, updateConfig }) {
       hudY: initialY
     };
 
-    if (isAutoPos) {
+    if (isAutoPos || isOutOfBounds) {
       updateConfig('HUDX', initialX);
       updateConfig('HUDY', initialY);
     }
@@ -172,6 +175,20 @@ export default function AccessoryPreview({ config, updateConfig }) {
         <div className={styles.panelTitle} style={{ marginBottom: '0.5rem' }}>
           🖥️ HUD Live Preview
         </div>
+        
+        {isOutOfBounds && (
+          <div className={styles.coordsWarning}>
+            <div className={styles.coordsWarningText}>
+              ⚠️ <strong>Out of Bounds!</strong> Config contains old pixel coordinates (X: {config.HUDX}px, Y: {config.HUDY}px). Please reset the position to percentages (0-100%).
+            </div>
+            <button 
+              onClick={handleResetToAuto}
+              className={styles.coordsWarningBtn}
+            >
+              🔄 Reset Position
+            </button>
+          </div>
+        )}
         
         <div ref={screenRef} className={styles.simScreen}>
           {/* Screen Background grid overlay */}

@@ -20,7 +20,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #ffffff;
+  color: var(--text-main);
   text-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
@@ -45,7 +45,7 @@
 }
 
 .dropZoneText {
-  color: #f8fafc;
+  color: var(--text-main);
   font-size: 0.9rem;
 }
 
@@ -55,7 +55,7 @@
 }
 
 .dropZoneHint {
-  color: #94a3b8;
+  color: var(--text-sub);
   font-size: 0.8rem;
   margin-top: 0.5rem;
 }
@@ -126,7 +126,7 @@
 .checkboxText {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #e2e8f0;
+  color: var(--text-sub);
 }
 
 .colorPickerWrapper {
@@ -184,7 +184,7 @@
 
 .tabBtn {
   background: transparent;
-  color: #cbd5e1;
+  color: var(--text-sub);
   border: none;
   font-family: var(--font-jakarta);
   font-weight: 700;
@@ -200,12 +200,12 @@
 
 .tabBtn:hover {
   background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .tabBtn.active {
   background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(37, 99, 235, 0.2) 100%);
-  color: #ffffff;
+  color: var(--text-main);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(56, 189, 248, 0.35);
 }
@@ -357,7 +357,7 @@
 
 .btnPrimary {
   background: linear-gradient(90deg, #0ea5e9 0%, #2563eb 100%);
-  color: #fff;
+  color: var(--text-main);
   border: 1px solid rgba(56, 189, 248, 0.3);
   box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35), 0 0 12px rgba(56, 189, 248, 0.2);
 }
@@ -374,7 +374,7 @@
 
 .previewLegend {
   font-size: 0.8rem;
-  color: #94a3b8;
+  color: var(--text-sub);
   font-weight: 500;
   text-shadow: 0 1px 2px rgba(0,0,0,0.5);
   text-align: center;
@@ -393,14 +393,14 @@
   padding: 0.65rem 0.85rem;
   margin-bottom: 0.85rem;
   font-size: 0.85rem;
-  color: #cbd5e1;
+  color: var(--text-sub);
   line-height: 1.4;
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 }
 
 .filterInfoBox strong {
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .filterInfoBox ul {
@@ -516,7 +516,7 @@
 }
 
 .noTagsHint {
-  color: #94a3b8;
+  color: var(--text-sub);
   font-size: 0.85rem;
   font-style: italic;
   font-weight: 500;
@@ -586,7 +586,7 @@
 .pathText {
   font-family: monospace;
   font-size: 0.8rem;
-  color: #94a3b8;
+  color: var(--text-sub);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -595,7 +595,7 @@
 }
 
 .pathCopyContainer:hover .pathText {
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .copyIconWrapper {
@@ -631,7 +631,7 @@
   position: fixed;
   z-index: 10000;
   background: var(--accent-success);
-  color: #fff;
+  color: var(--text-main);
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 0.8rem;
@@ -681,7 +681,7 @@
   box-shadow: 0 4px 20px rgba(6, 182, 212, 0.35);
   border-radius: 8px;
   padding: 0.6rem 0.8rem;
-  color: #f8fafc;
+  color: var(--text-main);
   font-size: 0.8rem;
   line-height: 1.4;
   text-align: center;
@@ -746,7 +746,7 @@
 
 .fieldHelpText {
   font-size: 0.78rem;
-  color: #94a3b8;
+  color: var(--text-sub);
   margin-top: 0.35rem;
   line-height: 1.35;
 }
@@ -765,7 +765,7 @@
 .subTabBtn {
   flex: 1;
   background: transparent;
-  color: #94a3b8;
+  color: var(--text-sub);
   border: none;
   font-family: var(--font-jakarta);
   font-weight: 600;
@@ -778,7 +778,7 @@
 }
 
 .subTabBtn:hover {
-  color: #ffffff;
+  color: var(--text-main);
   background: rgba(255, 255, 255, 0.04);
 }
 
