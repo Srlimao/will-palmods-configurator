@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { hexToRgbaObject, rgbaObjectToHex } from '../../components/shared/utils/colorUtils';
 import { readFileAsJson } from '../../components/shared/utils/configParsers';
-import KeyBindInput from '../../components/shared/KeyBindInput/KeyBindInput';
 import DownloadCard from '../../components/shared/DownloadCard/DownloadCard';
 import ChangelogView from '../changelog/ChangelogView';
+import GeneralTab from './components/GeneralTab';
+import StyleTab from './components/StyleTab';
+import AccessoryPreview from './components/AccessoryPreview';
 import styles from './styles/accessory.module.css';
 import { DEFAULT_CONFIG, normalizeConfig } from './utils/accessoryConfigHelpers';
 import schemaData from './AccessoryToggler.schema.json';
@@ -74,18 +75,6 @@ export default function AccessoryConfig({ initialConfig, changelogData }) {
   };
 
   const schemaProperties = schemaData.schema;
-
-  // Manual coordinates handler
-  const hasManualCoords = config.HUDX !== null && config.HUDY !== null;
-  const toggleManualCoords = () => {
-    if (hasManualCoords) {
-      updateConfig('HUDX', null);
-      updateConfig('HUDY', null);
-    } else {
-      updateConfig('HUDX', 1525);
-      updateConfig('HUDY', 1226);
-    }
-  };
 
   return (
     <>
@@ -177,141 +166,26 @@ export default function AccessoryConfig({ initialConfig, changelogData }) {
             </div>
 
             {subTab === 'General' ? (
-              <>
-                {/* General Settings */}
-                <div className={styles.formRow}>
-                  {schemaProperties.Debug && (
-                    <div className={`${styles.formGroup} ${styles.checkboxGroup}`} onClick={() => updateConfig('Debug', !config.Debug)}>
-                      <input type="checkbox" checked={config.Debug} readOnly />
-                      <span className={styles.checkboxText}>Debug Mode</span>
-                    </div>
-                  )}
-                  {schemaProperties.Language && (
-                    <div className={styles.formGroup}>
-                      <label>Language</label>
-                      <select value={config.Language} onChange={e => updateConfig('Language', e.target.value)} style={{ padding: '0.55rem 0.75rem' }}>
-                        {schemaProperties.Language.options.map(lang => (
-                          <option key={lang} value={lang}>{lang === 'system' ? 'System Default' : lang}</option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
-                </div>
-
-                <div className={styles.formRow}>
-                  {schemaProperties.ScanIntervalMs && (
-                    <div className={styles.formGroup} style={{ gridColumn: 'span 2' }}>
-                      <label>Scan Interval <span className="val-label">{config.ScanIntervalMs}ms</span></label>
-                      <input 
-                        type="range" 
-                        min={schemaProperties.ScanIntervalMs.min} 
-                        max={schemaProperties.ScanIntervalMs.max} 
-                        step={schemaProperties.ScanIntervalMs.step} 
-                        value={config.ScanIntervalMs} 
-                        onChange={e => updateConfig('ScanIntervalMs', parseInt(e.target.value, 10))} 
-                      />
-                    </div>
-                  )}
-                </div>
-
-                {/* Coordinates Section */}
-                <div className={styles.formRow} style={{ marginTop: '0.5rem' }}>
-                  <div className={`${styles.formGroup} ${styles.checkboxGroup}`} onClick={toggleManualCoords} style={{ gridColumn: 'span 2' }}>
-                    <input type="checkbox" checked={hasManualCoords} readOnly />
-                    <span className={styles.checkboxText}>Manual Coordinates (Lock Position)</span>
-                  </div>
-                </div>
-
-                {hasManualCoords && (
-                  <div className={styles.formRow}>
-                    {schemaProperties.HUDX && (
-                      <div className={styles.formGroup}>
-                        <label>HUD X Position <span className="val-label">{config.HUDX}px</span></label>
-                        <input 
-                          type="range" 
-                          min={schemaProperties.HUDX.min} 
-                          max={schemaProperties.HUDX.max} 
-                          step={schemaProperties.HUDX.step} 
-                          value={config.HUDX} 
-                          onChange={e => updateConfig('HUDX', parseInt(e.target.value, 10))} 
-                        />
-                      </div>
-                    )}
-                    {schemaProperties.HUDY && (
-                      <div className={styles.formGroup}>
-                        <label>HUD Y Position <span className="val-label">{config.HUDY}px</span></label>
-                        <input 
-                          type="range" 
-                          min={schemaProperties.HUDY.min} 
-                          max={schemaProperties.HUDY.max} 
-                          step={schemaProperties.HUDY.step} 
-                          value={config.HUDY} 
-                          onChange={e => updateConfig('HUDY', parseInt(e.target.value, 10))} 
-                        />
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Keybinds Section */}
-                <div className={styles.sectionTitle}>⌨️ Keybinds</div>
-                <div className={styles.keybindWarning}>
-                  ⚠️ Changing keybinds requires a game restart to take effect.
-                </div>
-                {schemaProperties.KeyBinds && (
-                  <div className={styles.formRow} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-                    {Object.keys(schemaProperties.KeyBinds.properties).map(key => (
-                      <div key={key} className={styles.formGroup} style={{ marginBottom: '0.5rem' }}>
-                        <label style={{ fontSize: '0.85rem' }}>
-                          {key.replace('ToggleSlot', 'Toggle Slot ').replace('ToggleEditMode', 'Toggle Edit Mode').replace('ResetCoords', 'Reset Coords')}
-                        </label>
-                        <KeyBindInput value={config.KeyBinds[key]} onChange={v => updateKeyBind(key, v)} />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </>
+              <GeneralTab 
+                config={config} 
+                updateConfig={updateConfig} 
+                updateKeyBind={updateKeyBind} 
+                schemaProperties={schemaProperties} 
+              />
             ) : (
-              <>
-                {/* Style Customization */}
-                <div className={styles.formRow}>
-                  {schemaProperties.HUDScale && (
-                    <div className={styles.formGroup} style={{ gridColumn: 'span 2' }}>
-                      <label>HUD Scale <span className="val-label">{config.HUDScale}</span></label>
-                      <input 
-                        type="range" 
-                        min={schemaProperties.HUDScale.min} 
-                        max={schemaProperties.HUDScale.max} 
-                        step={schemaProperties.HUDScale.step} 
-                        value={config.HUDScale} 
-                        onChange={e => updateConfig('HUDScale', parseFloat(e.target.value))} 
-                      />
-                    </div>
-                  )}
-                </div>
-
-                {/* Colors Section */}
-                <div className={styles.sectionTitle}>🎨 Colors</div>
-                <div className={styles.formRow} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-                  {Object.entries(schemaProperties)
-                    .filter(([_, prop]) => prop.type === 'color')
-                    .map(([key]) => (
-                      <div key={key} className={styles.formGroup} style={{ marginBottom: '0.5rem' }}>
-                        <label style={{ fontSize: '0.85rem' }}>{key.replace(/([A-Z])/g, ' $1').trim()}</label>
-                        <div className={styles.colorPickerWrapper}>
-                          <input type="color" value={rgbaObjectToHex(config[key])} onChange={e => updateConfig(key, hexToRgbaObject(e.target.value, config[key].A))} />
-                          <input type="text" value={rgbaObjectToHex(config[key])} readOnly />
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </>
+              <StyleTab 
+                config={config} 
+                updateConfig={updateConfig} 
+                schemaProperties={schemaProperties} 
+              />
             )}
           </>
         )}
       </div>
 
       <div className={styles.previewContainer}>
+        <AccessoryPreview config={config} updateConfig={updateConfig} />
+        
         <DownloadCard 
           config={config}
           copied={copied}

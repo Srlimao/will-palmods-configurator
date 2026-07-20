@@ -488,3 +488,314 @@
   color: #38bdf8;
   border: 1px solid rgba(56, 189, 248, 0.25);
 }
+
+/* Coordinates Simulator Container */
+.simContainer {
+  margin-bottom: 1.5rem;
+}
+
+.simScreen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url('../../../assets/palworld_hud_bg.jpg');
+  background-size: cover;
+  background-position: center;
+  border: 2px solid rgba(56, 189, 248, 0.35);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(56, 189, 248, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.simGrid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.simGuidelineX {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1px dashed rgba(56, 189, 248, 0.45);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.simGuidelineY {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-left: 1px dashed rgba(56, 189, 248, 0.45);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.simCoordsOverlay {
+  position: absolute;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: #38bdf8;
+  font-family: monospace;
+  font-size: 11px;
+  pointer-events: none;
+  z-index: 20;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.simSlot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.simSlot:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  filter: brightness(1.15);
+}
+
+.simSlotKey {
+  position: absolute;
+  font-family: var(--font-jakarta);
+  font-weight: 700;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.simSlotName {
+  position: absolute;
+  font-family: var(--font-jakarta);
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 4px;
+  box-sizing: border-box;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+}
+
+.simSlotLine {
+  position: absolute;
+  border-radius: 2px;
+}
+
+.simAutoBanner {
+  position: absolute;
+  bottom: 12px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: #34d399;
+  font-size: 0.75rem;
+  font-weight: 700;
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: bannerPulse 2s infinite;
+}
+
+@keyframes bannerPulse {
+  0% { transform: scale(1); opacity: 0.95; }
+  50% { transform: scale(1.02); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.95; }
+}
+
+.simLegend {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 0.65rem;
+  padding: 0 0.25rem;
+}
+
+.simLegend span {
+  font-weight: 500;
+}
+
+/* Numeric Coordinates Inputs */
+.coordsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 0.75rem;
+  align-items: flex-end;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.coordBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.coordLabel {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.coordInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.coordInput {
+  width: 100%;
+  padding-right: 2rem !important;
+  font-family: monospace !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.coordUnit {
+  position: absolute;
+  right: 0.85rem;
+  color: #64748b;
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.coordActions {
+  display: flex;
+  height: 38px;
+}
+
+/* Mock Game HUD Overlays */
+.simPlayerStatus {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  z-index: 2;
+  opacity: 0.65;
+  pointer-events: none;
+  font-family: var(--font-jakarta), sans-serif;
+  transform-origin: bottom left;
+}
+
+.simAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1.5px solid #38bdf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #38bdf8;
+  font-weight: 700;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.4);
+}
+
+.simPlayerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.simPlayerName {
+  font-size: 8px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.simBar {
+  width: 80px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+}
+
+.simBarFill {
+  height: 100%;
+}
+
+.simBarHP {
+  background: #10b981;
+  width: 80%;
+  box-shadow: 0 0 4px rgba(16, 185, 129, 0.4);
+}
+
+.simBarShield {
+  background: #3b82f6;
+  width: 60%;
+  box-shadow: 0 0 4px rgba(59, 130, 246, 0.4);
+}
+
+.simWeaponStatus {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  z-index: 2;
+  opacity: 0.65;
+  pointer-events: none;
+  font-family: var(--font-jakarta), sans-serif;
+  transform-origin: bottom right;
+}
+
+.simWeaponCard {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.35);
+}
+
+.simWeaponIcon {
+  font-size: 11px;
+}
+
+.simWeaponAmmo {
+  color: #38bdf8;
+  font-family: monospace;
+}
+
+
