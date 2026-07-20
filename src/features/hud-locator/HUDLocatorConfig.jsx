@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { downloadJson, readFileAsJson } from '../../components/shared/utils/configParsers';
+import { readFileAsJson } from '../../components/shared/utils/configParsers';
+import DownloadCard from '../../components/shared/DownloadCard/DownloadCard';
 import HUDPreview from './components/HUDPreview';
 import GlobalTab from './components/GlobalTab';
 import SectionTab from './components/SectionTab';
@@ -197,23 +198,13 @@ export default function HUDLocatorConfig({ initialConfig, changelogData }) {
       <div className={styles.previewContainer}>
         <HUDPreview config={config} />
         
-        <div className={`${styles.panel} ${styles.actions}`}>
-          <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => downloadJson(config, 'config.json')}>
-            💾 Download config.json
-          </button>
-          <div className={styles.pathCopyContainer} onClick={handleCopyPath} title="Click to copy path" style={{ marginTop: '0.75rem', marginBottom: '0.5rem', width: '100%', fontSize: '0.8rem' }}>
-            <span className={styles.pathText}>
-              %localappdata%\Pal\Saved\Mods\HUDLocator
-            </span>
-            <span className={styles.copyLabel}>Copy Path</span>
-            <span className={styles.copyIconWrapper}>
-              {copied ? '✅' : '📋'}
-            </span>
-          </div>
-          <div className="reload-tip">
-            💡 Press <kbd>Alt</kbd> + <kbd>R</kbd> to reload the save in game.
-          </div>
-        </div>
+        <DownloadCard 
+          config={config}
+          copied={copied}
+          handleCopyPath={handleCopyPath}
+          modName="HUDLocator"
+          styles={styles}
+        />
       </div>
 
       {toastPos && (

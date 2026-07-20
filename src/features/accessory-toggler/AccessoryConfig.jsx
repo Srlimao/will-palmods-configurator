@@ -1,45 +1,21 @@
 import { useState, useEffect } from 'react';
 import { hexToRgbaObject, rgbaObjectToHex } from '../../components/shared/utils/colorUtils';
-import { downloadJson, readFileAsJson } from '../../components/shared/utils/configParsers';
+import { readFileAsJson } from '../../components/shared/utils/configParsers';
 import KeyBindInput from '../../components/shared/KeyBindInput/KeyBindInput';
+import DownloadCard from '../../components/shared/DownloadCard/DownloadCard';
 import ChangelogView from '../changelog/ChangelogView';
 import styles from './styles/accessory.module.css';
-
-const DEFAULT_CONFIG = {
-  ScanIntervalMs: 1000,
-  Language: "system",
-  DisabledSlots: [],
-  TextColorEnabled: { R: 0.0, G: 0.96, B: 0.83, A: 1.0 },
-  Debug: true,
-  Enabled: true,
-  CardBg: { R: 0.05, G: 0.07, B: 0.15, A: 0.85 },
-  HUDY: 1226.0,
-  KeyBinds: {
-    ToggleSlot4: "EIGHT",
-    ResetCoords: "R",
-    ToggleSlot3: "SEVEN",
-    ToggleEditMode: "F7",
-    ToggleSlot2: "SIX",
-    ToggleSlot1: "FIVE"
-  },
-  TextColorLabel: { R: 0.9, G: 0.9, B: 0.95, A: 1.0 },
-  ShadowColor: { R: 0.0, G: 0.0, B: 0.0, A: 0.9 },
-  TextColorDisabled: { R: 1.0, G: 0.35, B: 0.37, A: 1.0 },
-  HUDX: 1525.0,
-  AccessoryNames: {
-    Accessory_Attack_1: "Attack Pendant"
-  },
-  HUDScale: 1.5,
-  BorderColor: { R: 0.0, G: 0.95, B: 1.0, A: 0.6 }
-};
+import { DEFAULT_CONFIG, normalizeConfig } from './utils/accessoryConfigHelpers';
+import schemaData from './AccessoryToggler.schema.json';
 
 export default function AccessoryConfig({ initialConfig, changelogData }) {
   const [config, setConfig] = useState(() => {
     if (initialConfig) {
-      return { ...DEFAULT_CONFIG, ...initialConfig };
+      return normalizeConfig(initialConfig);
     }
     return DEFAULT_CONFIG;
   });
+  const [subTab, setSubTab] = useState('General');
   const [isDragging, setIsDragging] = useState(false);
   const [copied, setCopied] = useState(false);
   const [toastPos, setToastPos] = useState(null);
@@ -80,7 +56,7 @@ export default function AccessoryConfig({ initialConfig, changelogData }) {
   const processFile = async (file) => {
     try {
       const json = await readFileAsJson(file);
-      setConfig({ ...DEFAULT_CONFIG, ...json });
+      setConfig(normalizeConfig(json));
     } catch (err) {
       alert(err.message);
     }
@@ -97,8 +73,18 @@ export default function AccessoryConfig({ initialConfig, changelogData }) {
     }));
   };
 
-  const exportConfig = () => {
-    downloadJson(config, 'config.json');
+  const schemaProperties = schemaData.schema;
+
+  // Manual coordinates handler
+  const hasManualCoords = config.HUDX !== null && config.HUDY !== null;
+  const toggleManualCoords = () => {
+    if (hasManualCoords) {
+      updateConfig('HUDX', null);
+      updateConfig('HUDY', null);
+    } else {
+      updateConfig('HUDX', 1525);
+      updateConfig('HUDY', 1226);
+    }
   };
 
   return (
@@ -155,106 +141,184 @@ export default function AccessoryConfig({ initialConfig, changelogData }) {
           </div>
         </div>
 
-        <div className={styles.sectionTitle}>General</div>
-        <div className={styles.formRow}>
-          <div className={`${styles.formGroup} ${styles.checkboxGroup}`} onClick={() => updateConfig('Enabled', !config.Enabled)}>
-            <input type="checkbox" checked={config.Enabled} readOnly />
-            <span className={styles.checkboxText}>Master Enabled</span>
-          </div>
-          <div className={`${styles.formGroup} ${styles.checkboxGroup}`} onClick={() => updateConfig('Debug', !config.Debug)}>
-            <input type="checkbox" checked={config.Debug} readOnly />
-            <span className={styles.checkboxText}>Debug Mode</span>
-          </div>
-        </div>
-        <div className={styles.formRow}>
-          <div className={styles.formGroup}>
-            <label>HUD Scale <span className="val-label">{config.HUDScale}</span></label>
-            <input 
-              type="range" min="0.5" max="3.0" step="0.1" 
-              value={config.HUDScale} 
-              onChange={e => updateConfig('HUDScale', parseFloat(e.target.value))} 
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label>Scan Interval (ms) <span className="val-label">{config.ScanIntervalMs}</span></label>
-            <input 
-              type="range" min="500" max="5000" step="100" 
-              value={config.ScanIntervalMs} 
-              onChange={e => updateConfig('ScanIntervalMs', parseInt(e.target.value, 10))} 
-            />
-          </div>
+        {/* Master Enabled above tabs */}
+        <div className={styles.formRow} style={{ marginBottom: '0.85rem' }}>
+          {schemaProperties.Enabled && (
+            <div 
+              className={`${styles.formGroup} ${styles.checkboxGroup}`} 
+              onClick={() => updateConfig('Enabled', !config.Enabled)}
+              style={{ width: '100%', marginBottom: 0 }}
+            >
+              <input type="checkbox" checked={config.Enabled} readOnly />
+              <span className={styles.checkboxText}>Master Enabled</span>
+            </div>
+          )}
         </div>
 
-        <div className={styles.sectionTitle}>⌨️ Keybinds</div>
-        <div className={styles.keybindWarning}>
-          ⚠️ Changing keybinds requires a game restart to take effect (does not work with Alt+R config reload).
-        </div>
-        <div className={styles.formRow}>
-          <div className={styles.formGroup}>
-            <label>Toggle Edit Mode</label>
-            <KeyBindInput value={config.KeyBinds.ToggleEditMode} onChange={v => updateKeyBind('ToggleEditMode', v)} />
-          </div>
-          <div className={styles.formGroup}>
-            <label>Reset Coords</label>
-            <KeyBindInput value={config.KeyBinds.ResetCoords} onChange={v => updateKeyBind('ResetCoords', v)} />
-          </div>
-        </div>
-        <div className={styles.formRow}>
-          <div className={styles.formGroup}><label>Toggle Slot 1</label><KeyBindInput value={config.KeyBinds.ToggleSlot1} onChange={v => updateKeyBind('ToggleSlot1', v)} /></div>
-          <div className={styles.formGroup}><label>Toggle Slot 2</label><KeyBindInput value={config.KeyBinds.ToggleSlot2} onChange={v => updateKeyBind('ToggleSlot2', v)} /></div>
-        </div>
-        <div className={styles.formRow}>
-          <div className={styles.formGroup}><label>Toggle Slot 3</label><KeyBindInput value={config.KeyBinds.ToggleSlot3} onChange={v => updateKeyBind('ToggleSlot3', v)} /></div>
-          <div className={styles.formGroup}><label>Toggle Slot 4</label><KeyBindInput value={config.KeyBinds.ToggleSlot4} onChange={v => updateKeyBind('ToggleSlot4', v)} /></div>
-        </div>
+        {/* Render settings only when master is active */}
+        {config.Enabled && (
+          <>
+            {/* Sub-tabs Selector */}
+            <div className={styles.subTabs}>
+              <button 
+                type="button" 
+                className={`${styles.subTabBtn} ${subTab === 'General' ? styles.active : ''}`}
+                onClick={() => setSubTab('General')}
+              >
+                General Settings
+              </button>
+              <button 
+                type="button" 
+                className={`${styles.subTabBtn} ${subTab === 'Style' ? styles.active : ''}`}
+                onClick={() => setSubTab('Style')}
+              >
+                Style Customization
+              </button>
+            </div>
 
-        <div className={styles.sectionTitle}>🎨 Colors</div>
-        <div className={styles.formRow}>
-          <div className={styles.formGroup}>
-            <label>Card Background</label>
-            <div className={styles.colorPickerWrapper}>
-              <input type="color" value={rgbaObjectToHex(config.CardBg)} onChange={e => updateConfig('CardBg', hexToRgbaObject(e.target.value, config.CardBg.A))} />
-              <input type="text" value={rgbaObjectToHex(config.CardBg)} readOnly />
-            </div>
-          </div>
-          <div className={styles.formGroup}>
-            <label>Border Color</label>
-            <div className={styles.colorPickerWrapper}>
-              <input type="color" value={rgbaObjectToHex(config.BorderColor)} onChange={e => updateConfig('BorderColor', hexToRgbaObject(e.target.value, config.BorderColor.A))} />
-              <input type="text" value={rgbaObjectToHex(config.BorderColor)} readOnly />
-            </div>
-          </div>
-        </div>
-        <div className={styles.formRow}>
-          <div className={styles.formGroup}>
-            <label>Text Color (Enabled)</label>
-            <div className={styles.colorPickerWrapper}>
-              <input type="color" value={rgbaObjectToHex(config.TextColorEnabled)} onChange={e => updateConfig('TextColorEnabled', hexToRgbaObject(e.target.value, config.TextColorEnabled.A))} />
-              <input type="text" value={rgbaObjectToHex(config.TextColorEnabled)} readOnly />
-            </div>
-          </div>
-          <div className={styles.formGroup}>
-            <label>Text Color (Disabled)</label>
-            <div className={styles.colorPickerWrapper}>
-              <input type="color" value={rgbaObjectToHex(config.TextColorDisabled)} onChange={e => updateConfig('TextColorDisabled', hexToRgbaObject(e.target.value, config.TextColorDisabled.A))} />
-              <input type="text" value={rgbaObjectToHex(config.TextColorDisabled)} readOnly />
-            </div>
-          </div>
-        </div>
+            {subTab === 'General' ? (
+              <>
+                {/* General Settings */}
+                <div className={styles.formRow}>
+                  {schemaProperties.Debug && (
+                    <div className={`${styles.formGroup} ${styles.checkboxGroup}`} onClick={() => updateConfig('Debug', !config.Debug)}>
+                      <input type="checkbox" checked={config.Debug} readOnly />
+                      <span className={styles.checkboxText}>Debug Mode</span>
+                    </div>
+                  )}
+                  {schemaProperties.Language && (
+                    <div className={styles.formGroup}>
+                      <label>Language</label>
+                      <select value={config.Language} onChange={e => updateConfig('Language', e.target.value)} style={{ padding: '0.55rem 0.75rem' }}>
+                        {schemaProperties.Language.options.map(lang => (
+                          <option key={lang} value={lang}>{lang === 'system' ? 'System Default' : lang}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                </div>
+
+                <div className={styles.formRow}>
+                  {schemaProperties.ScanIntervalMs && (
+                    <div className={styles.formGroup} style={{ gridColumn: 'span 2' }}>
+                      <label>Scan Interval <span className="val-label">{config.ScanIntervalMs}ms</span></label>
+                      <input 
+                        type="range" 
+                        min={schemaProperties.ScanIntervalMs.min} 
+                        max={schemaProperties.ScanIntervalMs.max} 
+                        step={schemaProperties.ScanIntervalMs.step} 
+                        value={config.ScanIntervalMs} 
+                        onChange={e => updateConfig('ScanIntervalMs', parseInt(e.target.value, 10))} 
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Coordinates Section */}
+                <div className={styles.formRow} style={{ marginTop: '0.5rem' }}>
+                  <div className={`${styles.formGroup} ${styles.checkboxGroup}`} onClick={toggleManualCoords} style={{ gridColumn: 'span 2' }}>
+                    <input type="checkbox" checked={hasManualCoords} readOnly />
+                    <span className={styles.checkboxText}>Manual Coordinates (Lock Position)</span>
+                  </div>
+                </div>
+
+                {hasManualCoords && (
+                  <div className={styles.formRow}>
+                    {schemaProperties.HUDX && (
+                      <div className={styles.formGroup}>
+                        <label>HUD X Position <span className="val-label">{config.HUDX}px</span></label>
+                        <input 
+                          type="range" 
+                          min={schemaProperties.HUDX.min} 
+                          max={schemaProperties.HUDX.max} 
+                          step={schemaProperties.HUDX.step} 
+                          value={config.HUDX} 
+                          onChange={e => updateConfig('HUDX', parseInt(e.target.value, 10))} 
+                        />
+                      </div>
+                    )}
+                    {schemaProperties.HUDY && (
+                      <div className={styles.formGroup}>
+                        <label>HUD Y Position <span className="val-label">{config.HUDY}px</span></label>
+                        <input 
+                          type="range" 
+                          min={schemaProperties.HUDY.min} 
+                          max={schemaProperties.HUDY.max} 
+                          step={schemaProperties.HUDY.step} 
+                          value={config.HUDY} 
+                          onChange={e => updateConfig('HUDY', parseInt(e.target.value, 10))} 
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Keybinds Section */}
+                <div className={styles.sectionTitle}>⌨️ Keybinds</div>
+                <div className={styles.keybindWarning}>
+                  ⚠️ Changing keybinds requires a game restart to take effect.
+                </div>
+                {schemaProperties.KeyBinds && (
+                  <div className={styles.formRow} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
+                    {Object.keys(schemaProperties.KeyBinds.properties).map(key => (
+                      <div key={key} className={styles.formGroup} style={{ marginBottom: '0.5rem' }}>
+                        <label style={{ fontSize: '0.85rem' }}>
+                          {key.replace('ToggleSlot', 'Toggle Slot ').replace('ToggleEditMode', 'Toggle Edit Mode').replace('ResetCoords', 'Reset Coords')}
+                        </label>
+                        <KeyBindInput value={config.KeyBinds[key]} onChange={v => updateKeyBind(key, v)} />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                {/* Style Customization */}
+                <div className={styles.formRow}>
+                  {schemaProperties.HUDScale && (
+                    <div className={styles.formGroup} style={{ gridColumn: 'span 2' }}>
+                      <label>HUD Scale <span className="val-label">{config.HUDScale}</span></label>
+                      <input 
+                        type="range" 
+                        min={schemaProperties.HUDScale.min} 
+                        max={schemaProperties.HUDScale.max} 
+                        step={schemaProperties.HUDScale.step} 
+                        value={config.HUDScale} 
+                        onChange={e => updateConfig('HUDScale', parseFloat(e.target.value))} 
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Colors Section */}
+                <div className={styles.sectionTitle}>🎨 Colors</div>
+                <div className={styles.formRow} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
+                  {Object.entries(schemaProperties)
+                    .filter(([_, prop]) => prop.type === 'color')
+                    .map(([key]) => (
+                      <div key={key} className={styles.formGroup} style={{ marginBottom: '0.5rem' }}>
+                        <label style={{ fontSize: '0.85rem' }}>{key.replace(/([A-Z])/g, ' $1').trim()}</label>
+                        <div className={styles.colorPickerWrapper}>
+                          <input type="color" value={rgbaObjectToHex(config[key])} onChange={e => updateConfig(key, hexToRgbaObject(e.target.value, config[key].A))} />
+                          <input type="text" value={rgbaObjectToHex(config[key])} readOnly />
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </>
+            )}
+          </>
+        )}
       </div>
 
       <div className={styles.previewContainer}>
-        <div className={`${styles.panel} ${styles.actions}`}>
-          <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={exportConfig}>
-            💾 Download config.json
-          </button>
-          <div className="help-text">
-            Save this file to your mod's directory to apply changes.
-          </div>
-          <div className="reload-tip">
-            💡 Press <kbd>Alt</kbd> + <kbd>R</kbd> to reload the save in game.
-          </div>
-        </div>
+        <DownloadCard 
+          config={config}
+          copied={copied}
+          handleCopyPath={handleCopyPath}
+          modName="AccessoryToggler"
+          styles={styles}
+        />
       </div>
 
       {toastPos && (

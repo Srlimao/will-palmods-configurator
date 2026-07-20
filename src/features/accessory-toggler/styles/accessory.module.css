@@ -451,3 +451,40 @@
     transform: translate(50%, 0);
   }
 }
+
+.subTabs {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+  background: rgba(0, 0, 0, 0.18);
+  padding: 0.25rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+}
+
+.subTabBtn {
+  flex: 1;
+  background: transparent;
+  color: #94a3b8;
+  border: none;
+  font-family: var(--font-jakarta);
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.subTabBtn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.subTabBtn.active {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
