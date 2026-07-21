@@ -1,6 +1,8 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { UE_KEYCODES, mapJsKeyToUE } from './keycodes';
 import styles from './keybind.module.css';
+
+const UE_KEYCODES_WITH_LOWER = UE_KEYCODES.map(k => ({ original: k, lower: k.toLowerCase() }));
 
 export default function KeyBindInput({ value, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,8 +11,13 @@ export default function KeyBindInput({ value, onChange }) {
   const containerRef = useRef(null);
 
   // Filter keycodes based on search
-  const searchLower = search.toLowerCase();
-  const filteredKeys = UE_KEYCODES.filter(k => k.toLowerCase().includes(searchLower));
+  const filteredKeys = useMemo(() => {
+    if (!search) return UE_KEYCODES;
+    const searchLower = search.toLowerCase();
+    return UE_KEYCODES_WITH_LOWER
+      .filter(k => k.lower.includes(searchLower))
+      .map(k => k.original);
+  }, [search]);
 
   // Close dropdown on outside click
   useEffect(() => {
