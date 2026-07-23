@@ -39,7 +39,12 @@ export default function ChangelogView({ changelogData, isOpen, onClose }) {
               >
                 <div className={styles.dateRow}>
                   <span className={styles.date}>{entry.date}</span>
-                  {index === 0 && <span className={styles.latestBadge}>Latest Update</span>}
+                  {index === 0 && (
+                    <>
+                      <span className={styles.latestBadge}>Latest Update</span>
+                      <span className={styles.updateModBadge}>Update Your Mod</span>
+                    </>
+                  )}
                 </div>
                 <ul className={styles.list}>
                   {entry.changes.flatMap(parseChanges).map((change, cIdx) => (
