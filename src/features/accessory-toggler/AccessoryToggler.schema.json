@@ -1,6 +1,6 @@
 {
   "modName": "AccessoryToggler",
-  "version": "1.3.0",
+  "version": "2.4.0",
   "schema": {
     "Enabled": {
       "type": "boolean",
@@ -32,9 +32,17 @@
         "es-MX"
       ]
     },
+    "SlotsToShow": {
+      "type": "number",
+      "description": "Number of accessory slots to display on the HUD (1 to 4).",
+      "default": 4,
+      "min": 1,
+      "max": 4,
+      "step": 1
+    },
     "HUDX": {
       "type": "number",
-      "description": "Manual horizontal coordinate percentage of the display HUD widget (0-100%). Leave null for auto position.",
+      "description": "Manual horizontal coordinate of the display HUD widget as a percentage of screen width (0 to 100). Leave null for auto/drag-and-drop position.",
       "default": null,
       "min": 0,
       "max": 100,
@@ -42,7 +50,7 @@
     },
     "HUDY": {
       "type": "number",
-      "description": "Manual vertical coordinate percentage of the display HUD widget (0-100%). Leave null for auto position.",
+      "description": "Manual vertical coordinate of the display HUD widget as a percentage of screen height (0 to 100). Leave null for auto/drag-and-drop position.",
       "default": null,
       "min": 0,
       "max": 100,
@@ -133,6 +141,17 @@
       "type": "section",
       "description": "Keybindings for toggling accessory slots and editor mode.",
       "properties": {
+        "Modifier": {
+          "type": "enum",
+          "description": "Modifier key required for utility shortcuts (ToggleEditMode, ResetCoords, ToggleUI).",
+          "default": "ALT",
+          "options": [
+            "ALT",
+            "CTRL",
+            "SHIFT",
+            "NONE"
+          ]
+        },
         "ToggleSlot1": {
           "type": "keybind",
           "description": "Hotkey to toggle Slot 1 accessory.",
@@ -155,13 +174,18 @@
         },
         "ToggleEditMode": {
           "type": "keybind",
-          "description": "Hotkey to toggle screen-drag UI editor mode.",
+          "description": "Hotkey to toggle screen-drag UI editor mode (requires the configured Modifier).",
           "default": "F7"
         },
         "ResetCoords": {
           "type": "keybind",
-          "description": "Hotkey to reset HUD coordinates back to default position in edit mode.",
+          "description": "Hotkey to reset HUD coordinates back to default position in edit mode (requires the configured Modifier).",
           "default": "R"
+        },
+        "ToggleUI": {
+          "type": "keybind",
+          "description": "Hotkey to toggle HUD visibility (requires the configured Modifier).",
+          "default": "H"
         }
       }
     }
